@@ -11,6 +11,8 @@ export async function execute(
     'Here are the available commands:\n' +
       "/helps - Provides help information about the bot's commands.\n" +
       "/ping - Checks the bot's latency.\n" +
-      '/create-issue - Create a GitHub issue from Discord.\n',
+      "/status - Displays the bot's current status and available repositories.\n" +
+      '/create-issue - Create a GitHub issue from Discord.\n' +
+      '/add-repo - Add a GitHub repository to the bot.',
   );
 }

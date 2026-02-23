@@ -3,6 +3,8 @@ import {
   addGuildRepository,
   removeGuildRepository,
   getGuildRepositories,
+  getUserMapping,
+  setUserMapping,
 } from './repositories';
 
 export {
@@ -10,4 +12,6 @@ export {
   addGuildRepository,
   removeGuildRepository,
   getGuildRepositories,
+  getUserMapping,
+  setUserMapping,
 };

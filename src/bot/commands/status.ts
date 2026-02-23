@@ -1,9 +1,8 @@
-import {
-  ChatInputCommandInteraction,
-  SlashCommandBuilder,
-} from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { getGuildRepositories } from '@/db';
 import { logger } from '@/lib';
+import { listIssues } from '@/github/services';
+import { Issue } from '@/github/services/issues';
 
 export const data = new SlashCommandBuilder()
   .setName('status')
@@ -22,11 +21,40 @@ export async function execute(
   }
 
   const repos = getGuildRepositories(guildId);
-  const repoList = repos.length > 0 ? repos.map(r => `- ${r}`).join('\n') : 'No repositories added yet. Use `/add-repo` to add one.';
 
-  await interaction.reply(
-    `✅ Bot is online and operational!\n\n` +
-      `**Available Repositories:**\n${repoList}\n\n` +
-      `Use \`/create-issue\` to create an issue in one of the above repositories.`,
+  if (repos.length === 0) {
+    await interaction.reply({
+      content: '❌ No repositories added yet. Use `/add-repo` to add one.',
+      ephemeral: true,
+    });
+    return;
+  }
+
+  await interaction.deferReply();
+
+  // fetch issues per repo in parallel
+  const results = await Promise.all(
+    repos.map(async (repo) => {
+      const issues = await listIssues(repo);
+      return { repo, issues };
+    }),
+  );
+
+  // build message per repo
+  const sections = results.map(({ repo, issues }) => {
+    const issueList =
+      issues.length > 0
+        ? issues
+            .map((issue: Issue) => `- #${issue.number}: ${issue.title}\n`)
+            .join('')
+        : ' No open issues.';
+
+    return `Repository: **${repo}**\n${issueList}`;
+  });
+
+  await interaction.editReply(
+    `📋 **Repositories & Open Issues**\n\n` +
+      sections.join('\n\n') +
+      `\n\nUse \`/create-issue\` to create a new issue.`,
   );
 }

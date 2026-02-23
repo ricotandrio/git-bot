@@ -30,7 +30,6 @@ export async function handleInteraction(interaction: Interaction) {
         `Received command: /${interaction.commandName} from ${interaction.user.tag} (${interaction.user.id})`,
       );
       await command.execute(interaction);
-      
     } catch (error) {
       console.error(`Error in /${interaction.commandName}:`, error);
 
@@ -40,5 +39,4 @@ export async function handleInteraction(interaction: Interaction) {
       });
     }
   }
-
 }

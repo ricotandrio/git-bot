@@ -16,7 +16,7 @@ export async function createIssue(
     labels: [label],
   });
 
-  return response.data; // { number, html_url, id, node_id }
+  return response.data;
 }
 
 // Assign an issue
@@ -33,4 +33,21 @@ export async function assignIssue(
   });
 
   return response.data;
+}
+
+export interface Issue {
+  number: number;
+  title: string;
+  html_url: string;
+}
+
+// Get list of issues
+export async function listIssues(repoName: string): Promise<Issue[]> {
+  const response = await octokit.issues.listForRepo({
+    owner: config.GITHUB.OWNER,
+    repo: repoName,
+    state: 'open',
+  });
+
+  return response.data as Issue[];
 }

@@ -14,5 +14,14 @@ export function initDb(): void {
     );
   `);
 
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS user_mappings (
+      id              INTEGER PRIMARY KEY AUTOINCREMENT,
+      discord_id      TEXT NOT NULL UNIQUE,
+      github_username TEXT NOT NULL,
+      created_at      DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
   logger.info('Database initialized');
 }

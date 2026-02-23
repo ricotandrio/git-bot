@@ -8,8 +8,10 @@ import {
 import * as helps from './helps';
 import * as ping from './ping';
 import * as status from './status';
-import * as createIssue from './create-issue';
-import * as addRepository from './add-repository';
+import * as createIssue from './createIssue';
+import * as addRepository from './addRepository';
+import * as assignIssue from './assignIssue';
+import * as linkGithub from './linkGithub';
 
 export interface Command {
   data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder;
@@ -22,13 +24,9 @@ export const commands: Record<string, Command> = {
   ping,
   status,
   'create-issue': createIssue,
-  'add-repo': addRepository,
+  'add-repository': addRepository,
+  'assign-issue': assignIssue,
+  'link-github': linkGithub,
 };
 
-export { 
-  helps, 
-  ping, 
-  status,
-  createIssue, 
-  addRepository 
-};
+export { helps, ping, status, createIssue, addRepository };

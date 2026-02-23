@@ -26,7 +26,35 @@ export function getGuildRepositories(guildId: string): string[] {
     WHERE guild_id = ?
   `,
     )
-    .all(guildId) as { repoName: string }[];
+    .all(guildId) as { repo_name: string }[];
 
-  return rows.map((row) => row.repoName);
+  return rows.map((row) => row.repo_name);
+}
+
+export function getUserMapping(
+  discordId: string,
+): { githubUsername: string } | null {
+  const row = db
+    .prepare(
+      `
+    SELECT github_username FROM user_mappings WHERE discord_id = ?
+  `,
+    )
+    .get(discordId) as { github_username: string } | undefined;
+
+  if (!row) return null;
+  return { githubUsername: row.github_username };
+}
+
+export function setUserMapping(
+  discordId: string,
+  githubUsername: string,
+): void {
+  db.prepare(
+    `
+    INSERT INTO user_mappings (discord_id, github_username)
+    VALUES (?, ?)
+    ON CONFLICT(discord_id) DO UPDATE SET github_username = excluded.github_username
+  `,
+  ).run(discordId, githubUsername);
 }

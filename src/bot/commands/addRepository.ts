@@ -9,15 +9,17 @@ import { addGuildRepository, getGuildRepositories } from '@/db';
 export const data = new SlashCommandBuilder()
   .setName('add-repo')
   .setDescription('Add a GitHub repository to this server')
-  .addStringOption(option =>
+  .addStringOption((option) =>
     option
       .setName('name')
       .setDescription('Repository name e.g. my-repo')
-      .setRequired(true)
+      .setRequired(true),
   )
   .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
 
-export async function execute(interaction: ChatInputCommandInteraction): Promise<void> {
+export async function execute(
+  interaction: ChatInputCommandInteraction,
+): Promise<void> {
   const guildId = interaction.guildId;
   if (!guildId) {
     await interaction.reply({
@@ -32,7 +34,8 @@ export async function execute(interaction: ChatInputCommandInteraction): Promise
   // validate format — no spaces, no full URLs
   if (repoName.includes(' ') || repoName.includes('github.com')) {
     await interaction.reply({
-      content: '❌ Invalid format. Use just the repo name e.g. `my-repo`, not a full URL.',
+      content:
+        '❌ Invalid format. Use just the repo name e.g. `my-repo`, not a full URL.',
       ephemeral: true,
     });
     return;

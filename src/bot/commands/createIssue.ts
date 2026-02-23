@@ -3,7 +3,7 @@ import {
   ChatInputCommandInteraction,
   SlashCommandBuilder,
 } from 'discord.js';
-import { createIssue } from '@/github/services/issues';
+import { createIssue } from '@/github/services';
 import { logger } from '@/lib/logger';
 import { getGuildRepositories } from '@/db';
 

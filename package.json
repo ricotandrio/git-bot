@@ -14,7 +14,8 @@
     "dev-deploy": "dotenv -e .env.dev -- tsx src/bot/deploy.ts",
 
     "build": "tsc",
-
+    "typecheck": "tsc --noEmit",
+    
     "prod": "concurrently \"npm run prod-bot\" \"npm run prod-api\"",
     "prod-bot": "dotenv -e .env.prod -- node dist/bot/index.js",
     "prod-api": "dotenv -e .env.prod -- node dist/api/index.js"

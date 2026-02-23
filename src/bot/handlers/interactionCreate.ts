@@ -1,6 +1,6 @@
 import { Interaction } from 'discord.js';
 import { commands } from '@/bot/commands';
-import { logger } from '@/bot/lib';
+import { logger } from '@/lib';
 
 export async function handleInteraction(interaction: Interaction) {
   if (!interaction.isChatInputCommand()) return;

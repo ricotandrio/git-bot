@@ -1,5 +1,5 @@
 import pino from "pino";
-import { config } from "@/bot/config";
+import { config } from "@/config";
 
 const isDev = config.NODE_ENV === "development";
 
@@ -12,7 +12,7 @@ if (isDev) {
     target: "pino-pretty",
     options: {
       colorize: true,
-      translateTime: "HH:MM:ss",
+      translateTime: "HH:mm:ss",
       ignore: "pid,hostname",
     },
   };

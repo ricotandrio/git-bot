@@ -1,9 +1,9 @@
 import { REST, Routes, SlashCommandBuilder } from "discord.js";
-import { config } from "@/bot/config";
+import { config } from "@/config";
 import { commands } from "@/bot/commands";
-import { logger } from "@/bot/lib";
+import { logger } from "@/lib";
 
-const rest = new REST().setToken(config.DISCORD_BOT_TOKEN);
+const rest = new REST().setToken(config.DISCORD.BOT_TOKEN);
 
 (async () => {
   try {
@@ -17,7 +17,7 @@ const rest = new REST().setToken(config.DISCORD_BOT_TOKEN);
     }
 
     await rest.put(
-      Routes.applicationGuildCommands(config.DISCORD_CLIENT_ID, config.DISCORD_GUILD_ID),
+      Routes.applicationGuildCommands(config.DISCORD.CLIENT_ID, config.DISCORD.GUILD_ID),
       { body: body },
     );
 

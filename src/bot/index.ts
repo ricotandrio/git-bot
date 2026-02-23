@@ -1,5 +1,5 @@
 import { Client, GatewayIntentBits } from "discord.js"
-import { config } from "@/bot/config"
+import { config } from "@/config"
 import { handleInteraction } from "@/bot/handlers"
 
 const client = new Client({
@@ -7,6 +7,7 @@ const client = new Client({
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMembers,
   ],
 })
 
@@ -16,4 +17,4 @@ client.on("clientReady", () => {
 
 client.on('interactionCreate', handleInteraction);
 
-client.login(config.DISCORD_BOT_TOKEN)
+client.login(config.DISCORD.BOT_TOKEN)

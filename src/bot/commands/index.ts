@@ -25,7 +25,7 @@ export const commands: Record<string, Command> = {
   ping,
   status,
   'create-issue': createIssue,
-  'add-repository': addRepository,
+  'add-repo': addRepository,
   'assign-issue': assignIssue,
   'link-github': linkGithub,
   'unlink-github': unlinkGithub,

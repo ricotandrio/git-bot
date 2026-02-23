@@ -8,17 +8,15 @@
   },
   "scripts": {
     "dev": "concurrently \"npm run dev-bot\" \"npm run dev-api\"",
-
-    "dev-bot": "dotenv -e .env.dev -- tsx watch src/bot/index.ts",
+    "dev-bot": "npm run dev-deploy && dotenv -e .env.dev -- tsx watch src/bot/index.ts",
     "dev-api": "dotenv -e .env.dev -- tsx watch src/api/index.ts",
     "dev-deploy": "dotenv -e .env.dev -- tsx src/bot/deploy.ts",
-
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    
     "prod": "concurrently \"npm run prod-bot\" \"npm run prod-api\"",
     "prod-bot": "dotenv -e .env.prod -- node dist/bot/index.js",
-    "prod-api": "dotenv -e .env.prod -- node dist/api/index.js"
+    "prod-api": "dotenv -e .env.prod -- node dist/api/index.js",
+    "prettier": "npx prettier --write ."
   },
   "keywords": [],
   "author": "",
@@ -35,10 +33,12 @@
     "pino-pretty": "^13.1.3"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
     "@types/express": "^5.0.6",
     "@types/node": "^25.3.0",
     "@types/pino": "^7.0.4",
     "dotenv-cli": "^11.0.0",
+    "prettier": "^3.8.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }

@@ -1,6 +1,3 @@
-import { createIssue, assignIssue } from "./issues";
+import { createIssue, assignIssue } from './issues';
 
-export {
-  createIssue,
-  assignIssue
-}
+export { createIssue, assignIssue };

@@ -1,6 +1,7 @@
-import { Client, GatewayIntentBits } from "discord.js"
-import { config } from "@/config"
-import { handleInteraction } from "@/bot/handlers"
+import { Client, GatewayIntentBits } from 'discord.js';
+import { config } from '@/config';
+import { handleInteraction } from '@/bot/handlers';
+import { initDb } from '@/db';
 
 const client = new Client({
   intents: [
@@ -9,12 +10,18 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
     GatewayIntentBits.GuildMembers,
   ],
-})
+});
 
-client.on("clientReady", () => {
-  console.log(`Logged in as ${client.user?.tag}!`)
-})
+function main() {
+  client.on('clientReady', () => {
+    console.log(`Logged in as ${client.user?.tag}!`);
+  });
 
-client.on('interactionCreate', handleInteraction);
+  client.on('interactionCreate', handleInteraction);
 
-client.login(config.DISCORD.BOT_TOKEN)
+  initDb();
+
+  client.login(config.DISCORD.BOT_TOKEN);
+}
+
+main();

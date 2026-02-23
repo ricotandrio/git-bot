@@ -1,0 +1,32 @@
+import { db } from './client';
+
+export function addGuildRepository(guildId: string, repoName: string): void {
+  db.prepare(
+    `
+    INSERT OR IGNORE INTO guild_repositories (guild_id, repo_name)
+    VALUES (?, ?)
+  `,
+  ).run(guildId, repoName);
+}
+
+export function removeGuildRepository(guildId: string, repoName: string): void {
+  db.prepare(
+    `
+    DELETE FROM guild_repositories
+    WHERE guild_id = ? AND repo_name = ?
+  `,
+  ).run(guildId, repoName);
+}
+
+export function getGuildRepositories(guildId: string): string[] {
+  const rows = db
+    .prepare(
+      `
+    SELECT repo_name FROM guild_repositories
+    WHERE guild_id = ?
+  `,
+    )
+    .all(guildId) as { repoName: string }[];
+
+  return rows.map((row) => row.repoName);
+}

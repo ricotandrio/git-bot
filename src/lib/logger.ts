@@ -1,19 +1,19 @@
-import pino from "pino";
-import { config } from "@/config";
+import pino from 'pino';
+import { config } from '@/config';
 
-const isDev = config.NODE_ENV === "development";
+const isDev = config.NODE_ENV === 'development';
 
 const options: pino.LoggerOptions = {
-  level: isDev ? "debug" : "info",
+  level: isDev ? 'debug' : 'info',
 };
 
 if (isDev) {
   options.transport = {
-    target: "pino-pretty",
+    target: 'pino-pretty',
     options: {
       colorize: true,
-      translateTime: "HH:mm:ss",
-      ignore: "pid,hostname",
+      translateTime: 'HH:mm:ss',
+      ignore: 'pid,hostname',
     },
   };
 }

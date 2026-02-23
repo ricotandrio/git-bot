@@ -1,5 +1,3 @@
-import { handleInteraction } from "./interactionCreate";
+import { handleInteraction } from './interactionCreate';
 
-export {
-  handleInteraction
-}
+export { handleInteraction };

@@ -1,5 +1,3 @@
-import { config } from "./env"
+import { config } from './env';
 
-export { 
-  config 
-}
+export { config };

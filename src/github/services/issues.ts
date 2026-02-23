@@ -2,10 +2,15 @@ import { octokit } from '../client';
 import { config } from '@/config';
 
 // Create an issue
-export async function createIssue(title: string, body: string, label: string, repoName?: string) {
+export async function createIssue(
+  title: string,
+  body: string,
+  label: string,
+  repoName: string,
+) {
   const response = await octokit.issues.create({
     owner: config.GITHUB.OWNER,
-    repo: repoName || config.GITHUB.REPO,
+    repo: repoName,
     title,
     body,
     labels: [label],
@@ -15,10 +20,14 @@ export async function createIssue(title: string, body: string, label: string, re
 }
 
 // Assign an issue
-export async function assignIssue(issueNumber: number, githubUsername: string, repoName?: string) {
+export async function assignIssue(
+  issueNumber: number,
+  githubUsername: string,
+  repoName: string,
+) {
   const response = await octokit.issues.addAssignees({
     owner: config.GITHUB.OWNER,
-    repo: repoName || config.GITHUB.REPO,
+    repo: repoName,
     issue_number: issueNumber,
     assignees: [githubUsername],
   });

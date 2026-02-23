@@ -5,15 +5,15 @@ function requireEnv(key: string): string {
 }
 
 export const config = {
-  NODE_ENV: process.env.NODE_ENV || "development",
+  NODE_ENV: process.env.NODE_ENV || 'development',
   DISCORD: {
-    BOT_TOKEN: requireEnv("DISCORD_BOT_TOKEN"),
-    CLIENT_ID: requireEnv("DISCORD_CLIENT_ID"),
-    GUILD_ID: requireEnv("DISCORD_GUILD_ID"),
+    BOT_TOKEN: requireEnv('DISCORD_BOT_TOKEN'),
+    CLIENT_ID: requireEnv('DISCORD_CLIENT_ID'),
+    GUILD_ID: requireEnv('DISCORD_GUILD_ID'),
   },
   GITHUB: {
-    TOKEN: requireEnv("GITHUB_PAT"),
-    OWNER: requireEnv("GITHUB_OWNER"),
-    REPO: requireEnv("GITHUB_REPO"),
+    TOKEN: requireEnv('GITHUB_PAT'),
+    OWNER: requireEnv('GITHUB_OWNER'),
+    REPO: requireEnv('GITHUB_REPO'),
   },
 };

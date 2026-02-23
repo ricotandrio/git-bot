@@ -7,12 +7,14 @@
     "doc": "docs"
   },
   "scripts": {
-    "dev": "dotenv -e .env.development.local -- concurrently \"ts-node-dev --respawn src/bot/index.ts\" \"ts-node-dev --respawn src/api/index.ts\"",
-    "dev-bot": "dotenv -e .env.development.local -- ts-node-dev --respawn src/bot/index.ts",
-    "dev-api": "dotenv -e .env.development.local -- ts-node-dev --respawn src/api/index.ts",
-    "deploy": "dotenv -e .env.development.local -- ts-node-dev src/bot/deploy.ts",
+    "dev": "concurrently \"npm run dev-bot\" \"npm run dev-api\"",
+    "dev-bot": "npm run dev-deploy && dotenv -e .env.dev -- ts-node-dev --respawn -r tsconfig-paths/register src/bot/index.ts",
+    "dev-api": "dotenv -e .env.dev -- ts-node-dev --respawn -r tsconfig-paths/register src/api/index.ts",
+    "dev-deploy": "dotenv -e .env.dev -- ts-node-dev -r tsconfig-paths/register src/bot/deploy.ts",
+    "prod": "concurrently \"npm run prod-bot\" \"npm run prod-api\"",
+    "prod-bot": "dotenv -e .env.prod -- node dist/bot/index.js",
+    "prod-api": "dotenv -e .env.prod -- node dist/api/index.js",
     "build": "tsc",
-    "start": "concurrently \"node dist/bot/index.js\" \"node dist/api/index.js\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -22,13 +24,17 @@
   "dependencies": {
     "discord.js": "^14.25.1",
     "dotenv": "^17.3.1",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "pino": "^10.3.1",
+    "pino-pretty": "^13.1.3"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/node": "^25.3.0",
+    "@types/pino": "^7.0.4",
     "dotenv-cli": "^11.0.0",
     "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.9.3"
   }
 }

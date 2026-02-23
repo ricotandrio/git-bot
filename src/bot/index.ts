@@ -1,4 +1,6 @@
 import { Client, GatewayIntentBits } from "discord.js"
+import { config } from "@/bot/config"
+import { handleInteraction } from "@/bot/handlers"
 
 const client = new Client({
   intents: [
@@ -8,8 +10,10 @@ const client = new Client({
   ],
 })
 
-client.on("ready", () => {
+client.on("clientReady", () => {
   console.log(`Logged in as ${client.user?.tag}!`)
 })
 
-client.login(process.env.DISCORD_BOT_TOKEN)
+client.on('interactionCreate', handleInteraction);
+
+client.login(config.DISCORD_BOT_TOKEN)

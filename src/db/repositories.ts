@@ -58,3 +58,7 @@ export function setUserMapping(
   `,
   ).run(discordId, githubUsername);
 }
+
+export function deleteUserMapping(discordId: string): void {
+  db.prepare(`DELETE FROM user_mappings WHERE discord_id = ?`).run(discordId);
+}

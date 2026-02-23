@@ -40,14 +40,19 @@ export async function execute(
     }),
   );
 
-  // build message per repo
   const sections = results.map(({ repo, issues }) => {
-    const issueList =
-      issues.length > 0
-        ? issues
-            .map((issue: Issue) => `- #${issue.number}: ${issue.title}\n`)
-            .join('')
-        : ' No open issues.';
+    if (issues.length === 0) {
+      return `Repository: **${repo}**\n  No open issues.`;
+    }
+
+    const issueList = issues.map((issue: Issue) => {
+      if (issue.assignees.length === 0) {
+        return `- #${issue.number}: ${issue.title} [unassigned]`;
+      }
+
+      const assignees = issue.assignees.join(', ');
+      return `- #${issue.number}: ${issue.title} [${assignees}]`;
+    }).join('\n');
 
     return `Repository: **${repo}**\n${issueList}`;
   });

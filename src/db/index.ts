@@ -5,6 +5,7 @@ import {
   getGuildRepositories,
   getUserMapping,
   setUserMapping,
+  deleteUserMapping,
 } from './repositories';
 
 export {
@@ -14,4 +15,5 @@ export {
   getGuildRepositories,
   getUserMapping,
   setUserMapping,
+  deleteUserMapping,
 };

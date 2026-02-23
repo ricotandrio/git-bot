@@ -38,10 +38,11 @@ export async function assignIssue(
 export interface Issue {
   number: number;
   title: string;
-  html_url: string;
+  htmlUrl: string;
+  assignees: string[]; 
 }
 
-// Get list of issues
+// List open issues for a repository
 export async function listIssues(repoName: string): Promise<Issue[]> {
   const response = await octokit.issues.listForRepo({
     owner: config.GITHUB.OWNER,
@@ -49,5 +50,10 @@ export async function listIssues(repoName: string): Promise<Issue[]> {
     state: 'open',
   });
 
-  return response.data as Issue[];
+  return response.data.map(issue => ({
+    number: issue.number,
+    title: issue.title,
+    htmlUrl: issue.html_url,
+    assignees: issue.assignees?.map(a => a.login) ?? [],
+  }));
 }

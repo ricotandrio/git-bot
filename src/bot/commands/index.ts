@@ -12,6 +12,7 @@ import * as createIssue from './createIssue';
 import * as addRepository from './addRepository';
 import * as assignIssue from './assignIssue';
 import * as linkGithub from './linkGithub';
+import * as unlinkGithub from './unlinkGithub';
 
 export interface Command {
   data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder;
@@ -27,6 +28,16 @@ export const commands: Record<string, Command> = {
   'add-repository': addRepository,
   'assign-issue': assignIssue,
   'link-github': linkGithub,
+  'unlink-github': unlinkGithub,
 };
 
-export { helps, ping, status, createIssue, addRepository };
+export {
+  helps,
+  ping,
+  status,
+  createIssue,
+  addRepository,
+  assignIssue,
+  linkGithub,
+  unlinkGithub,
+};

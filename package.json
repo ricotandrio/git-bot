@@ -1,0 +1,34 @@
+{
+  "name": "git-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "dotenv -e .env.development.local -- concurrently \"ts-node-dev --respawn src/bot/index.ts\" \"ts-node-dev --respawn src/api/index.ts\"",
+    "dev-bot": "dotenv -e .env.development.local -- ts-node-dev --respawn src/bot/index.ts",
+    "dev-api": "dotenv -e .env.development.local -- ts-node-dev --respawn src/api/index.ts",
+    "deploy": "dotenv -e .env.development.local -- ts-node-dev src/bot/deploy.ts",
+    "build": "tsc",
+    "start": "concurrently \"node dist/bot/index.js\" \"node dist/api/index.js\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "discord.js": "^14.25.1",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.3.0",
+    "dotenv-cli": "^11.0.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.3"
+  }
+}

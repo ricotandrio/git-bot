@@ -1,7 +1,7 @@
 import { db } from '../client';
 
 export class UserMappingRepository {
-  static async add(discordUserId: string, githubUsername: string) {
+  static add(discordUserId: string, githubUsername: string) {
     db.prepare(
       `
       INSERT OR REPLACE INTO user_mappings (discord_user_id, github_username)
@@ -10,7 +10,7 @@ export class UserMappingRepository {
     ).run(discordUserId, githubUsername);
   }
 
-  static async remove(discordUserId: string) {
+  static remove(discordUserId: string) {
     db.prepare(
       `
       DELETE FROM user_mappings
@@ -19,9 +19,7 @@ export class UserMappingRepository {
     ).run(discordUserId);
   }
 
-  static async getGithubUsername(
-    discordUserId: string,
-  ): Promise<string | null> {
+  static getGithubUsername(discordUserId: string): string | null {
     const row = db
       .prepare(
         `

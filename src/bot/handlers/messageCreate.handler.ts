@@ -17,6 +17,8 @@ export async function handleMessageCreate(message: Message): Promise<void> {
     .trim();
 
   if (!content) {
+    logger.info("No content after mention, sending greeting");
+    
     await message.reply(
       'Hey! How can I help? Try asking me to create an issue or check the board.',
     );

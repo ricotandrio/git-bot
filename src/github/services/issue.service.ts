@@ -47,7 +47,9 @@ export class IssueService {
 
       return response.data;
     } catch (error) {
-      logger.error(`Error assigning issue #${issueNumber} to ${githubUsername} in ${repoName}:`);
+      logger.error(
+        `Error assigning issue #${issueNumber} to ${githubUsername} in ${repoName}:`,
+      );
       throw error;
     }
   }
@@ -71,5 +73,4 @@ export class IssueService {
       return [];
     }
   }
-
 }

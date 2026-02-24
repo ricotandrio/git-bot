@@ -106,7 +106,7 @@ export async function autocomplete(
   }
 
   const focusedValue = interaction.options.getFocused(true);
-  const repositories: string[] = await GuildRepository.getAll(guildId);
+  const repositories: string[] = GuildRepository.getAll(guildId);
 
   const filtered = repositories
     .filter((repo) =>

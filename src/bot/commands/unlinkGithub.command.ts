@@ -13,7 +13,7 @@ export async function execute(
 
   // check if even linked
   const existingGithubUsername =
-    await UserMappingRepository.getGithubUsername(discordId);
+    UserMappingRepository.getGithubUsername(discordId);
   if (!existingGithubUsername) {
     await interaction.reply({
       content:
@@ -24,7 +24,7 @@ export async function execute(
   }
 
   try {
-    await UserMappingRepository.remove(discordId);
+    UserMappingRepository.remove(discordId);
 
     logger.info(
       { discordId, githubUsername: existingGithubUsername },

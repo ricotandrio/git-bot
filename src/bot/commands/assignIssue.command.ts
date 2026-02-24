@@ -47,7 +47,7 @@ export async function execute(
   const repoName = interaction.options.getString('repository', true);
 
   // resolve discord user → github username
-  const githubUsername = await UserMappingRepository.getGithubUsername(
+  const githubUsername = UserMappingRepository.getGithubUsername(
     discordUser.id,
   );
   if (!githubUsername) {
@@ -91,7 +91,7 @@ export async function autocomplete(
   }
 
   const focusedValue = interaction.options.getFocused(true);
-  const repositories: string[] = await GuildRepository.getAll(guildId);
+  const repositories: string[] = GuildRepository.getAll(guildId);
 
   const filtered = repositories
     .filter((repo) =>

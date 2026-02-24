@@ -42,7 +42,7 @@ export async function execute(
   }
 
   // check for duplicates
-  const existing = await GuildRepository.getAll(guildId);
+  const existing = GuildRepository.getAll(guildId);
   if (existing.includes(repoName)) {
     await interaction.reply({
       content: `❌ Repository **${repoName}** is already added.`,
@@ -52,7 +52,7 @@ export async function execute(
   }
 
   try {
-    await GuildRepository.add(guildId, repoName);
+    GuildRepository.add(guildId, repoName);
 
     logger.info({ guildId, repoName }, 'Repository added');
 

@@ -1,41 +1,28 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { Message } from 'discord.js';
-import { createIssue, assignIssue } from '@/github/services/issue.service';
-import { getGuildRepositories, getUserMapping } from '@/db';
+import { IssueService } from '@/github/services';
+import { GuildRepository, UserMappingRepository } from '@/db';
 import { logger } from '@/lib';
+import { SYSTEM_PROMPT } from './prompt';
+import { config } from '@/config';
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
-
-export const SYSTEM_PROMPT = `
-You are GitBot, a Discord bot that manages GitHub issues.
-You must respond ONLY with a JSON object — no explanation, no markdown, no backticks.
-
-Available commands:
-- available-repos: { "command": "available-repos", "args": {} }
-- create-issue: { "command": "create-issue", "args": { "title": string, "body": string, "label": string, "repo": string } }
-- assign-issue: { "command": "assign-issue", "args": { "issueNumber": number, "discordUserId": string, "repo": string } }
-- unknown:      { "command": "unknown", "args": { "reason": string } }
-
-Rules:
-- label must be one of: bug, design, feedback, enhancement — default to bug
-- if repo is not mentioned, set repo as null
-- if intent is unclear, use unknown command
-- respond with raw JSON only, no markdown
-`;
+const genAI = new GoogleGenerativeAI(config.LLM.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
 export async function handleLLMCommand(
   message: Message,
   content: string,
 ): Promise<void> {
   const guildId = message.guildId!;
-  const repos = getGuildRepositories(guildId);
+  const repos = GuildRepository.getAll(guildId);
 
   try {
     const prompt =
       `${SYSTEM_PROMPT}\n\n` +
       `Available repos: ${repos.join(', ')}\n` +
       `User message: ${content}`;
+
+    logger.info(prompt);
 
     const result = await model.generateContent(prompt);
     const raw = result.response.text().trim();
@@ -58,7 +45,7 @@ export async function handleLLMCommand(
     logger.info({ parsed }, 'LLM parsed command');
     await executeCommand(message, parsed);
   } catch (error) {
-    logger.error({ error }, 'Gemini API error');
+    logger.error({ err: error }, 'Gemini API error');
     await message.reply('❌ LLM error. Try using slash commands directly.');
   }
 }
@@ -68,6 +55,12 @@ async function executeCommand(
   parsed: { command: string; args: Record<string, any> },
 ): Promise<void> {
   switch (parsed.command) {
+    case 'greeting': {
+      const timeOfDay = parsed.args.timeOfDay || 'day';
+      await message.reply(`Good ${timeOfDay}! How can I assist you today?`);
+      break;
+    }
+
     case 'available-repos': {
       const guildId = message.guildId;
 
@@ -78,8 +71,29 @@ async function executeCommand(
         return;
       }
 
-      const repos = getGuildRepositories(guildId);
+      const repos = GuildRepository.getAll(guildId);
       await message.reply(`Available repositories: ${repos.join(', ')}`);
+      break;
+    }
+
+    case 'remove-repo': {
+      const guildId = message.guildId;
+
+      if (!guildId) {
+        await message.reply(
+          '❌ This command can only be used in a server channel.',
+        );
+        return;
+      }
+
+      const repoToRemove = parsed.args.repo;
+      if (!repoToRemove) {
+        await message.reply('❌ Please specify a repository to remove.');
+        return;
+      }
+
+      GuildRepository.remove(guildId, repoToRemove);
+      await message.reply(`✅ Repository **${repoToRemove}** removed.`);
       break;
     }
 
@@ -93,7 +107,7 @@ async function executeCommand(
         return;
       }
 
-      const issue = await createIssue(
+      const issue = await IssueService.create(
         title ?? 'New Issue',
         body ?? 'Created via Discord mention',
         label ?? 'bug',
@@ -108,7 +122,7 @@ async function executeCommand(
 
     case 'assign-issue': {
       const { issueNumber, discordUserId, repo } = parsed.args;
-      const mapping = getUserMapping(discordUserId);
+      const mapping = UserMappingRepository.getGithubUsername(discordUserId);
 
       if (!mapping) {
         await message.reply(
@@ -117,11 +131,7 @@ async function executeCommand(
         return;
       }
 
-      const response = await assignIssue(
-        issueNumber,
-        mapping.githubUsername,
-        repo,
-      );
+      const response = await IssueService.assign(issueNumber, mapping, repo);
       await message.reply(
         `✅ Issue **#${response.number}** assigned to **${mapping.githubUsername}**.`,
       );
@@ -132,7 +142,7 @@ async function executeCommand(
       await message.reply(
         `❓ ${parsed.args.reason}\n\nTry something like:\n` +
           `> @GitBot create an issue for login crash in my-repo\n` +
-          `> @GitBot assign issue #42 to @rico in my-repo`,
+          `> @GitBot assign issue #42 to @user in my-repo`,
       );
       break;
     }

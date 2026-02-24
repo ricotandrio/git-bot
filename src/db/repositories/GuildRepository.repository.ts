@@ -1,7 +1,7 @@
 import { db } from '../client';
 
 export class GuildRepository {
-  static async add(guildId: string, repository: string) {
+  static add(guildId: string, repository: string) {
     db.prepare(
       `
       INSERT OR IGNORE INTO guild_repositories (guild_id, repo_name)
@@ -10,7 +10,7 @@ export class GuildRepository {
     ).run(guildId, repository);
   }
 
-  static async remove(guildId: string, repository: string) {
+  static remove(guildId: string, repository: string) {
     db.prepare(
       `
       DELETE FROM guild_repositories
@@ -19,7 +19,7 @@ export class GuildRepository {
     ).run(guildId, repository);
   }
 
-  static async getAll(guildId: string): Promise<string[]> {
+  static getAll(guildId: string): string[] {
     const rows = db
       .prepare(
         `

@@ -16,4 +16,7 @@ export const config = {
     OWNER: requireEnv('GITHUB_OWNER'),
     REPO: requireEnv('GITHUB_REPO'),
   },
+  LLM: {
+    GEMINI_API_KEY: requireEnv('GEMINI_API_KEY'),
+  },
 };

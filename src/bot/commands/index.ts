@@ -5,14 +5,14 @@ import {
   AutocompleteInteraction,
 } from 'discord.js';
 
-import * as helps from './helps';
-import * as ping from './ping';
-import * as status from './status';
-import * as createIssue from './createIssue';
-import * as addRepository from './addRepository';
-import * as assignIssue from './assignIssue';
-import * as linkGithub from './linkGithub';
-import * as unlinkGithub from './unlinkGithub';
+import * as helps from './helps.command';
+import * as ping from './ping.command';
+import * as status from './status.command';
+import * as createIssue from './createIssue.command';
+import * as addRepository from './addRepository.command';
+import * as assignIssue from './assignIssue.command';
+import * as linkGithub from './linkGithub.command';
+import * as unlinkGithub from './unlinkGithub.command';
 
 export interface Command {
   data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder;

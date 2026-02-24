@@ -1,19 +1,5 @@
 import { initDb } from './client';
-import {
-  addGuildRepository,
-  removeGuildRepository,
-  getGuildRepositories,
-  getUserMapping,
-  setUserMapping,
-  deleteUserMapping,
-} from './repositories';
+import { GuildRepository } from './repositories/GuildRepository.repository';
+import { UserMappingRepository } from './repositories/UserMapping.repository';
 
-export {
-  initDb,
-  addGuildRepository,
-  removeGuildRepository,
-  getGuildRepositories,
-  getUserMapping,
-  setUserMapping,
-  deleteUserMapping,
-};
+export { initDb, GuildRepository, UserMappingRepository };

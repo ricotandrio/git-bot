@@ -3,8 +3,8 @@ import {
   SlashCommandBuilder,
   AutocompleteInteraction,
 } from 'discord.js';
-import { assignIssue } from '@/github/services/issues';
-import { getGuildRepositories, getUserMapping } from '@/db';
+import { IssueService } from '@/github/services';
+import { GuildRepository, UserMappingRepository } from '@/db';
 import { logger } from '@/lib';
 
 export const data = new SlashCommandBuilder()
@@ -47,8 +47,10 @@ export async function execute(
   const repoName = interaction.options.getString('repository', true);
 
   // resolve discord user → github username
-  const mapping = getUserMapping(discordUser.id);
-  if (!mapping) {
+  const githubUsername = await UserMappingRepository.getGithubUsername(
+    discordUser.id,
+  );
+  if (!githubUsername) {
     await interaction.reply({
       content:
         `❌ <@${discordUser.id}> hasn't linked their GitHub account yet.\n` +
@@ -61,19 +63,16 @@ export async function execute(
   await interaction.deferReply();
 
   try {
-    const response = await assignIssue(
+    const response = await IssueService.assign(
       issueNumber,
-      mapping.githubUsername,
+      githubUsername,
       repoName,
     );
 
-    logger.info(
-      { issueNumber, githubUsername: mapping.githubUsername, repoName },
-      'Issue assigned',
-    );
+    logger.info({ issueNumber, githubUsername, repoName }, 'Issue assigned');
 
     await interaction.editReply(
-      `✅ Issue **#${response.number}** in **${repoName}** assigned to <@${discordUser.id}> (${mapping.githubUsername}).`,
+      `✅ Issue **#${response.number}** in **${repoName}** assigned to <@${discordUser.id}> (${githubUsername}).`,
     );
   } catch (error) {
     logger.error({ error }, 'Failed to assign issue');
@@ -92,7 +91,7 @@ export async function autocomplete(
   }
 
   const focusedValue = interaction.options.getFocused(true);
-  const repositories: string[] = getGuildRepositories(guildId);
+  const repositories: string[] = await GuildRepository.getAll(guildId);
 
   const filtered = repositories
     .filter((repo) =>

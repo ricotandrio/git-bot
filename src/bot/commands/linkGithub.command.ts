@@ -1,5 +1,9 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
-import { setUserMapping, getUserMapping } from '@/db';
+import {
+  ChatInputCommandInteraction,
+  SlashCommandBuilder,
+  User,
+} from 'discord.js';
+import { UserMappingRepository } from '@/db';
 import { logger } from '@/lib';
 
 export const data = new SlashCommandBuilder()
@@ -19,11 +23,12 @@ export async function execute(
   const discordId = interaction.user.id;
 
   // check if already linked
-  const existing = getUserMapping(discordId);
-  if (existing) {
+  const existingGithubUsername =
+    await UserMappingRepository.getGithubUsername(discordId);
+  if (existingGithubUsername) {
     await interaction.reply({
       content:
-        `⚠️ You already have a linked GitHub account: **${existing.githubUsername}**.\n` +
+        `⚠️ You already have a linked GitHub account: **${existingGithubUsername}**.\n` +
         `Run \`/unlink-github\` first if you want to change it.`,
       ephemeral: true,
     });
@@ -44,7 +49,7 @@ export async function execute(
   await interaction.deferReply({ ephemeral: true });
 
   try {
-    setUserMapping(discordId, githubUsername);
+    await UserMappingRepository.add(discordId, githubUsername);
 
     logger.info({ discordId, githubUsername }, 'GitHub account linked');
 

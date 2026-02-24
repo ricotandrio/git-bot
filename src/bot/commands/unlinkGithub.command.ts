@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
-import { deleteUserMapping, getUserMapping } from '@/db';
+import { UserMappingRepository } from '@/db';
 import { logger } from '@/lib';
 
 export const data = new SlashCommandBuilder()
@@ -12,8 +12,9 @@ export async function execute(
   const discordId = interaction.user.id;
 
   // check if even linked
-  const existing = getUserMapping(discordId);
-  if (!existing) {
+  const existingGithubUsername =
+    await UserMappingRepository.getGithubUsername(discordId);
+  if (!existingGithubUsername) {
     await interaction.reply({
       content:
         "❌ You don't have a linked GitHub account. Use `/link-github` first.",
@@ -23,15 +24,15 @@ export async function execute(
   }
 
   try {
-    deleteUserMapping(discordId);
+    await UserMappingRepository.remove(discordId);
 
     logger.info(
-      { discordId, githubUsername: existing.githubUsername },
+      { discordId, githubUsername: existingGithubUsername },
       'GitHub account unlinked',
     );
 
     await interaction.reply({
-      content: `✅ Your GitHub account **${existing.githubUsername}** has been unlinked.`,
+      content: `✅ Your GitHub account **${existingGithubUsername}** has been unlinked.`,
       ephemeral: true,
     });
   } catch (error) {

@@ -23,6 +23,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@octokit/graphql": "^9.0.3",
     "@octokit/rest": "^22.0.1",
     "better-sqlite3": "^12.6.2",

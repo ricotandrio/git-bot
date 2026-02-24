@@ -1,3 +1,5 @@
-import { createIssue, assignIssue, listIssues } from './issues';
+import { IssueService, Issue } from './issue.service';
 
-export { createIssue, assignIssue, listIssues };
+export { IssueService };
+
+export type { Issue };

@@ -1,6 +1,6 @@
 import { Client, GatewayIntentBits } from 'discord.js';
 import { config } from '@/config';
-import { handleInteraction } from '@/bot/handlers';
+import { registerHandlers } from '@/bot/handlers';
 import { initDb } from '@/db';
 
 const client = new Client({
@@ -13,12 +13,7 @@ const client = new Client({
 });
 
 function main() {
-  client.on('clientReady', () => {
-    console.log(`Logged in as ${client.user?.tag}!`);
-  });
-
-  client.on('interactionCreate', handleInteraction);
-
+  registerHandlers(client);
   initDb();
 
   client.login(config.DISCORD.BOT_TOKEN);

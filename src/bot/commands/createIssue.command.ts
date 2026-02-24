@@ -3,9 +3,9 @@ import {
   ChatInputCommandInteraction,
   SlashCommandBuilder,
 } from 'discord.js';
-import { createIssue } from '@/github/services';
+import { IssueService } from '@/github/services';
 import { logger } from '@/lib/logger';
-import { getGuildRepositories } from '@/db';
+import { GuildRepository } from '@/db';
 
 export const data = new SlashCommandBuilder()
   .setName('create-issue')
@@ -51,7 +51,7 @@ export async function execute(
     return;
   }
 
-  const repositories = getGuildRepositories(guildId);
+  const repositories = await GuildRepository.getAll(guildId);
   if (repositories.length === 0) {
     await interaction.reply({
       content:
@@ -82,7 +82,7 @@ export async function execute(
   await interaction.deferReply({ ephemeral: true });
 
   try {
-    const issue = await createIssue(title, description, label, repo);
+    const issue = await IssueService.create(title, description, label, repo);
 
     await interaction.editReply(
       `✅ Issue #${issue.number} created → ${issue.html_url}`,
@@ -106,7 +106,7 @@ export async function autocomplete(
   }
 
   const focusedValue = interaction.options.getFocused(true);
-  const repositories: string[] = getGuildRepositories(guildId);
+  const repositories: string[] = await GuildRepository.getAll(guildId);
 
   const filtered = repositories
     .filter((repo) =>

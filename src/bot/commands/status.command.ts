@@ -1,12 +1,11 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
-import { getGuildRepositories } from '@/db';
-import { logger } from '@/lib';
-import { listIssues } from '@/github/services';
-import { Issue } from '@/github/services/issues';
+import { GuildRepository } from '@/db';
+import { IssueService } from '@/github/services/issue.service';
+import { Issue } from '@/github/services/issue.service';
 
 export const data = new SlashCommandBuilder()
   .setName('status')
-  .setDescription("Checks the bot's status and command availability.");
+  .setDescription("Checks the repositories' open issues status");
 
 export async function execute(
   interaction: ChatInputCommandInteraction,
@@ -20,7 +19,7 @@ export async function execute(
     return;
   }
 
-  const repos = getGuildRepositories(guildId);
+  const repos = await GuildRepository.getAll(guildId);
 
   if (repos.length === 0) {
     await interaction.reply({
@@ -35,7 +34,7 @@ export async function execute(
   // fetch issues per repo in parallel
   const results = await Promise.all(
     repos.map(async (repo) => {
-      const issues = await listIssues(repo);
+      const issues = await IssueService.getIssues(repo);
       return { repo, issues };
     }),
   );
@@ -45,14 +44,16 @@ export async function execute(
       return `Repository: **${repo}**\n  No open issues.`;
     }
 
-    const issueList = issues.map((issue: Issue) => {
-      if (issue.assignees.length === 0) {
-        return `- #${issue.number}: ${issue.title} [unassigned]`;
-      }
+    const issueList = issues
+      .map((issue: Issue) => {
+        if (issue.assignees.length === 0) {
+          return `- #${issue.number}: ${issue.title} [unassigned]`;
+        }
 
-      const assignees = issue.assignees.join(', ');
-      return `- #${issue.number}: ${issue.title} [${assignees}]`;
-    }).join('\n');
+        const assignees = issue.assignees.join(', ');
+        return `- #${issue.number}: ${issue.title} [${assignees}]`;
+      })
+      .join('\n');
 
     return `Repository: **${repo}**\n${issueList}`;
   });

@@ -4,7 +4,7 @@ import {
   PermissionFlagsBits,
 } from 'discord.js';
 import { logger } from '@/lib';
-import { addGuildRepository, getGuildRepositories } from '@/db';
+import { GuildRepository } from '@/db';
 
 export const data = new SlashCommandBuilder()
   .setName('add-repo')
@@ -42,7 +42,7 @@ export async function execute(
   }
 
   // check for duplicates
-  const existing = getGuildRepositories(guildId);
+  const existing = await GuildRepository.getAll(guildId);
   if (existing.includes(repoName)) {
     await interaction.reply({
       content: `❌ Repository **${repoName}** is already added.`,
@@ -52,7 +52,7 @@ export async function execute(
   }
 
   try {
-    addGuildRepository(guildId, repoName);
+    await GuildRepository.add(guildId, repoName);
 
     logger.info({ guildId, repoName }, 'Repository added');
 

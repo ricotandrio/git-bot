@@ -1,5 +1,5 @@
 import { octokit } from '../client';
-import { config } from '@/config';
+import { config } from '@/infrastructure/config';
 import { logger } from '@/lib';
 
 export interface Issue {

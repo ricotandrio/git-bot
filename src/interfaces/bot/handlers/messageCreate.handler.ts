@@ -1,7 +1,7 @@
 // src/bot/handlers/messageCreate.ts
 import { Message } from 'discord.js';
 import { logger } from '@/lib';
-import { handleLLMCommand } from '@/llm';
+import { handleLLMCommand } from '@/infrastructure/llm';
 
 export async function handleMessageCreate(message: Message): Promise<void> {
   if (message.author.bot) return;
@@ -17,8 +17,8 @@ export async function handleMessageCreate(message: Message): Promise<void> {
     .trim();
 
   if (!content) {
-    logger.info("No content after mention, sending greeting");
-    
+    logger.info('No content after mention, sending greeting');
+
     await message.reply(
       'Hey! How can I help? Try asking me to create an issue or check the board.',
     );

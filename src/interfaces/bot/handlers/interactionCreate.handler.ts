@@ -1,5 +1,5 @@
 import { Interaction } from 'discord.js';
-import { commands } from '@/bot/commands';
+import { commands } from '@/interfaces/bot/commands';
 import { logger } from '@/lib';
 
 export async function handleInteraction(interaction: Interaction) {

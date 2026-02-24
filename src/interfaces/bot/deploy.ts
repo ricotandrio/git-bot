@@ -1,6 +1,6 @@
-import { REST, Routes, SlashCommandBuilder } from 'discord.js';
-import { config } from '@/config';
-import { commands } from '@/bot/commands';
+import { REST, Routes } from 'discord.js';
+import { config } from '@/infrastructure/config';
+import { commands } from '@/interfaces/bot/commands';
 import { logger } from '@/lib';
 
 const rest = new REST().setToken(config.DISCORD.BOT_TOKEN);

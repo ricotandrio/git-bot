@@ -1,7 +1,7 @@
 import { Client, GatewayIntentBits } from 'discord.js';
-import { config } from '@/config';
-import { registerHandlers } from '@/bot/handlers';
-import { initDb } from '@/db';
+import { config } from '@/infrastructure/config';
+import { registerHandlers } from '@/interfaces/bot/handlers';
+import { initDb } from '@/infrastructure/db';
 
 const client = new Client({
   intents: [

@@ -3,9 +3,9 @@ import {
   SlashCommandBuilder,
   AutocompleteInteraction,
 } from 'discord.js';
-import { IssueService } from '@/github/services';
-import { GuildRepository, UserMappingRepository } from '@/db';
+import { GuildRepository } from '@/infrastructure/db';
 import { logger } from '@/lib';
+import { assignIssue } from '@/domain/usecases/issue.usecase';
 
 export const data = new SlashCommandBuilder()
   .setName('assign-issue')
@@ -34,6 +34,7 @@ export async function execute(
   interaction: ChatInputCommandInteraction,
 ): Promise<void> {
   const guildId = interaction.guildId;
+
   if (!guildId) {
     await interaction.reply({
       content: '❌ This command can only be used in a server.',
@@ -46,38 +47,45 @@ export async function execute(
   const discordUser = interaction.options.getUser('user', true);
   const repoName = interaction.options.getString('repository', true);
 
-  // resolve discord user → github username
-  const githubUsername = UserMappingRepository.getGithubUsername(
-    discordUser.id,
-  );
-  if (!githubUsername) {
-    await interaction.reply({
-      content:
-        `❌ <@${discordUser.id}> hasn't linked their GitHub account yet.\n` +
-        `Ask them to run \`/link-github\` first.`,
-      ephemeral: true,
-    });
-    return;
-  }
-
   await interaction.deferReply();
 
-  try {
-    const response = await IssueService.assign(
-      issueNumber,
-      githubUsername,
-      repoName,
-    );
+  const result = await assignIssue(
+    guildId,
+    discordUser.id,
+    repoName,
+    issueNumber,
+  );
 
-    logger.info({ issueNumber, githubUsername, repoName }, 'Issue assigned');
+  if (!result.success) {
+    switch (result.reason) {
+      case 'USER_NOT_LINKED':
+        await interaction.editReply(
+          `❌ <@${discordUser.id}> hasn't linked their GitHub account yet.\n` +
+          `Ask them to run \`/link-github\` first.`,
+        );
+        return;
 
-    await interaction.editReply(
-      `✅ Issue **#${response.number}** in **${repoName}** assigned to <@${discordUser.id}> (${githubUsername}).`,
-    );
-  } catch (error) {
-    logger.error({ error }, 'Failed to assign issue');
-    await interaction.editReply('❌ Failed to assign issue. Please try again.');
+      case 'REPO_NOT_CONFIGURED':
+        await interaction.editReply(
+          `❌ Repository **${repoName}** is not configured for this server.`,
+        );
+        return;
+
+      case 'EXTERNAL_ERROR':
+        logger.error(
+          { guildId, issueNumber, repoName },
+          'Failed to assign issue',
+        );
+        await interaction.editReply(
+          '❌ Failed to assign issue. Please try again.',
+        );
+        return;
+    }
   }
+
+  await interaction.editReply(
+    `✅ Issue **#${issueNumber}** in **${repoName}** assigned to <@${discordUser.id}>.`,
+  );
 }
 
 export async function autocomplete(

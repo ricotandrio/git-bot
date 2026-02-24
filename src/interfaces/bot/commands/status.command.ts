@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
-import { GuildRepository } from '@/db';
-import { IssueService } from '@/github/services/issue.service';
-import { Issue } from '@/github/services/issue.service';
+import { GuildRepository } from '@/infrastructure/db';
+import { IssueService } from '@/infrastructure/github/services/issue.service';
+import { Issue } from '@/infrastructure/github/services/issue.service';
 
 export const data = new SlashCommandBuilder()
   .setName('status')

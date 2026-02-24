@@ -3,9 +3,9 @@ import {
   ChatInputCommandInteraction,
   SlashCommandBuilder,
 } from 'discord.js';
-import { IssueService } from '@/github/services';
 import { logger } from '@/lib/logger';
-import { GuildRepository } from '@/db';
+import { GuildRepository } from '@/infrastructure/db';
+import { createIssue } from '@/domain/usecases/issue.usecase';
 
 export const data = new SlashCommandBuilder()
   .setName('create-issue')
@@ -43,6 +43,7 @@ export async function execute(
   interaction: ChatInputCommandInteraction,
 ): Promise<void> {
   const guildId = interaction.guildId;
+
   if (!guildId) {
     await interaction.reply({
       content: 'This command can only be used in a server.',
@@ -51,48 +52,44 @@ export async function execute(
     return;
   }
 
-  const repositories = await GuildRepository.getAll(guildId);
-  if (repositories.length === 0) {
-    await interaction.reply({
-      content:
-        'No repositories configured for this server. Please ask an admin to set up repositories first.',
-      ephemeral: true,
-    });
-    return;
-  }
-
-  const title = interaction.options.getString('title');
-  const label = interaction.options.getString('label');
-  const description = interaction.options.getString('description');
-  const repo = interaction.options.getString('repository', true);
-  if (!title || !label || !description || !repo) {
-    await interaction.editReply(
-      '❌ Missing required fields. Please provide title, label, and description.',
-    );
-    return;
-  }
-
-  if (!repositories.includes(repo)) {
-    await interaction.editReply(
-      '❌ Invalid repository. Please select a valid repository.',
-    );
-    return;
-  }
+  const title = interaction.options.getString('title', true);
+  const label = interaction.options.getString('label', true);
+  const description = interaction.options.getString('description', true);
+  const repoName = interaction.options.getString('repository', true);
 
   await interaction.deferReply({ ephemeral: true });
 
-  try {
-    const issue = await IssueService.create(title, description, label, repo);
+  const result = await createIssue(
+    guildId,
+    repoName,
+    title,
+    description,
+    label,
+  );
 
-    await interaction.editReply(
-      `✅ Issue #${issue.number} created → ${issue.html_url}`,
-    );
-  } catch (error) {
-    logger.error({ error }, 'Error creating issue');
-    await interaction.editReply(
-      '❌ Failed to create issue. Please try again later.',
-    );
+  if (!result.success) {
+    switch (result.reason) {
+      case 'REPO_NOT_CONFIGURED':
+        await interaction.editReply(
+          '❌ Repository is not configured for this server.',
+        );
+        return;
+
+      case 'EXTERNAL_ERROR':
+        logger.error(
+          { guildId, repoName, title },
+          'Failed to create issue',
+        );
+        await interaction.editReply(
+          '❌ Failed to create issue. Please try again later.',
+        );
+        return;
+    }
   }
+
+  await interaction.editReply(
+    `✅ Issue created → ${result.issueUrl}`,
+  );
 }
 
 export async function autocomplete(

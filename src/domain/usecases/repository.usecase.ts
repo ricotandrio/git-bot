@@ -1,4 +1,4 @@
-import { GuildRepository } from '@/domain/repositories';
+import { DbGuildRepository } from "@/infrastructure/db";
 
 // ADD REPOSITORY
 export type AddRepositoryResult =
@@ -7,10 +7,10 @@ export type AddRepositoryResult =
   | { success: false; reason: 'DUPLICATE' }
   | { success: false; reason: 'PERSISTENCE_ERROR' };
 
-export async function addRepositoryToDatabase(
+export function addRepositoryToDatabase(
   guildId: string,
   repoName: string,
-): Promise<AddRepositoryResult> {
+): AddRepositoryResult {
   const trimmed = repoName.trim();
 
   // validate format
@@ -18,14 +18,14 @@ export async function addRepositoryToDatabase(
     return { success: false, reason: 'INVALID_FORMAT' };
   }
 
-  const existing = GuildRepository.getAll(guildId);
+  const existing = DbGuildRepository.getAll(guildId);
 
   if (existing.includes(trimmed)) {
     return { success: false, reason: 'DUPLICATE' };
   }
 
   try {
-    GuildRepository.add(guildId, trimmed);
+    DbGuildRepository.add(guildId, trimmed);
     return { success: true, repoName: trimmed };
   } catch {
     return { success: false, reason: 'PERSISTENCE_ERROR' };
@@ -38,18 +38,18 @@ export type RemoveRepositoryResult =
   | { success: false; reason: 'NOT_FOUND' }
   | { success: false; reason: 'PERSISTENCE_ERROR' };
 
-export async function removeRepositoryFromDatabase(
+export function removeRepositoryFromDatabase(
   guildId: string,
   repoName: string,
-): Promise<RemoveRepositoryResult> {
-  const existing = GuildRepository.getAll(guildId);
+): RemoveRepositoryResult {
+  const existing = DbGuildRepository.getAll(guildId);
 
   if (!existing.includes(repoName)) {
     return { success: false, reason: 'NOT_FOUND' };
   }
 
   try {
-    GuildRepository.remove(guildId, repoName);
+    DbGuildRepository.remove(guildId, repoName);
     return { success: true };
   } catch {
     return { success: false, reason: 'PERSISTENCE_ERROR' };
@@ -61,11 +61,11 @@ export type ListRepositoriesResult =
   | { success: true; repositories: string[] }
   | { success: false; reason: 'PERSISTENCE_ERROR' };
 
-export async function listRepositoriesFromDatabase(
+export function listRepositoriesFromDatabase(
   guildId: string,
-): Promise<ListRepositoriesResult> {
+): ListRepositoriesResult {
   try {
-    const repos = GuildRepository.getAll(guildId);
+    const repos = DbGuildRepository.getAll(guildId);
     return { success: true, repositories: repos };
   } catch {
     return { success: false, reason: 'PERSISTENCE_ERROR' };

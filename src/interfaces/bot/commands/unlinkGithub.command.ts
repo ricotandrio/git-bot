@@ -13,7 +13,7 @@ export async function execute(
 
   await interaction.deferReply({ ephemeral: true });
 
-  const result = await unlinkGithubAccount(discordUserId);
+  const result = unlinkGithubAccount(discordUserId);
 
   if (!result.success) {
     switch (result.reason) {

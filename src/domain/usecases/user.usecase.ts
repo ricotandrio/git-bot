@@ -1,4 +1,4 @@
-import { UserMappingRepository } from '@/domain/repositories';
+import { DbUserMappingRepository } from "@/infrastructure/db";
 
 // LINK GITHUB ACCOUNT
 export type LinkGithubAccountResult =
@@ -7,13 +7,13 @@ export type LinkGithubAccountResult =
   | { success: false; reason: 'INVALID_USERNAME' }
   | { success: false; reason: 'PERSISTENCE_ERROR' };
 
-export async function linkGithubAccount(
+export function linkGithubAccount(
   discordUserId: string,
   githubUsername: string,
-): Promise<LinkGithubAccountResult> {
+): LinkGithubAccountResult {
   const trimmed = githubUsername.trim();
 
-  const existing = UserMappingRepository.getGithubUsername(discordUserId);
+  const existing = DbUserMappingRepository.getGithubUsername(discordUserId);
   if (existing) {
     return {
       success: false,
@@ -34,7 +34,7 @@ export async function linkGithubAccount(
   }
 
   try {
-    UserMappingRepository.add(discordUserId, trimmed);
+    DbUserMappingRepository.add(discordUserId, trimmed);
 
     return {
       success: true,
@@ -54,10 +54,10 @@ export type UnlinkGithubAccountResult =
   | { success: false; reason: 'NOT_LINKED' }
   | { success: false; reason: 'PERSISTENCE_ERROR' };
 
-export async function unlinkGithubAccount(
+export function unlinkGithubAccount(
   discordUserId: string,
-): Promise<UnlinkGithubAccountResult> {
-  const existing = UserMappingRepository.getGithubUsername(discordUserId);
+): UnlinkGithubAccountResult {
+  const existing = DbUserMappingRepository.getGithubUsername(discordUserId);
   if (!existing) {
     return {
       success: false,
@@ -66,7 +66,7 @@ export async function unlinkGithubAccount(
   }
 
   try {
-    UserMappingRepository.remove(discordUserId);
+    DbUserMappingRepository.remove(discordUserId);
 
     return {
       success: true,

@@ -1,7 +1,8 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
-import { GuildRepository } from '@/domain/repositories';
 import { IssueService } from '@/infrastructure/github/services/issue.service';
 import { Issue } from '@/infrastructure/github/services/issue.service';
+import { logger } from '@/lib';
+import { listRepositoriesFromDatabase } from '@/domain/usecases/repository.usecase';
 
 export const data = new SlashCommandBuilder()
   .setName('status')
@@ -19,9 +20,21 @@ export async function execute(
     return;
   }
 
-  const repos = GuildRepository.getAll(guildId);
+  const listRes = listRepositoriesFromDatabase(guildId);
 
-  if (repos.length === 0) {
+  if (!listRes.success) {
+    logger.error({ guildId }, 'Failed to fetch repositories for autocomplete');
+    await interaction.reply({
+      content: '❌ Failed to fetch repositories. Please try again later.',
+      ephemeral: true,
+    });
+    return;
+  }
+
+  const repositories = listRes.repositories;
+
+
+  if (repositories.length === 0) {
     await interaction.reply({
       content: '❌ No repositories added yet. Use `/add-repo` to add one.',
       ephemeral: true,
@@ -33,7 +46,7 @@ export async function execute(
 
   // fetch issues per repo in parallel
   const results = await Promise.all(
-    repos.map(async (repo) => {
+    repositories.map(async (repo) => {
       const issues = await IssueService.getIssues(repo);
       return { repo, issues };
     }),

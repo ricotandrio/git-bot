@@ -23,7 +23,7 @@ export async function execute(
 
   await interaction.deferReply({ ephemeral: true });
 
-  const result = await linkGithubAccount(discordUserId, githubUsername);
+  const result = linkGithubAccount(discordUserId, githubUsername);
 
   if (!result.success) {
     switch (result.reason) {

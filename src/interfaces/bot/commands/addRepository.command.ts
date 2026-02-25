@@ -32,7 +32,7 @@ export async function execute(
 
   const repoName = interaction.options.getString('name', true);
 
-  const result = await addRepositoryToDatabase(guildId, repoName);
+  const result = addRepositoryToDatabase(guildId, repoName);
 
   if (!result.success) {
     switch (result.reason) {

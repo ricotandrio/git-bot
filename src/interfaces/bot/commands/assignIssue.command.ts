@@ -3,9 +3,9 @@ import {
   SlashCommandBuilder,
   AutocompleteInteraction,
 } from 'discord.js';
-import { GuildRepository } from '@/domain/repositories';
 import { logger } from '@/lib';
 import { assignIssue } from '@/domain/usecases/issue.usecase';
+import { listRepositoriesFromDatabase } from '@/domain/usecases/repository.usecase';
 
 export const data = new SlashCommandBuilder()
   .setName('assign-issue')
@@ -99,7 +99,15 @@ export async function autocomplete(
   }
 
   const focusedValue = interaction.options.getFocused(true);
-  const repositories: string[] = GuildRepository.getAll(guildId);
+  const listRes = listRepositoriesFromDatabase(guildId);
+
+  if (!listRes.success) {
+    logger.error({ guildId }, 'Failed to fetch repositories for autocomplete');
+    await interaction.respond([]);
+    return;
+  }
+
+  const repositories = listRes.repositories;
 
   const filtered = repositories
     .filter((repo) =>

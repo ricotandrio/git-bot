@@ -1,5 +1,5 @@
 import { IssueService } from '@/infrastructure/github/services';
-import { GuildRepository, UserMappingRepository } from '@/domain/repositories';
+import { DbGuildRepository, DbUserMappingRepository } from '@/infrastructure/db';
 
 // CREATE ISSUE
 export type CreateIssueResult =
@@ -14,7 +14,7 @@ export async function createIssue(
   description: string,
   label: string,
 ): Promise<CreateIssueResult> {
-  const repos = GuildRepository.getAll(guildId);
+  const repos = DbGuildRepository.getAll(guildId);
 
   if (!repos.includes(repoName)) {
     return { success: false, reason: 'REPO_NOT_CONFIGURED' };
@@ -50,13 +50,13 @@ export async function assignIssue(
   repoName: string,
   issueNumber: number,
 ): Promise<AssignIssueResult> {
-  const githubUsername = UserMappingRepository.getGithubUsername(discordUserId);
+  const githubUsername = DbUserMappingRepository.getGithubUsername(discordUserId);
 
   if (!githubUsername) {
     return { success: false, reason: 'USER_NOT_LINKED' };
   }
 
-  const repos = GuildRepository.getAll(guildId);
+  const repos = DbGuildRepository.getAll(guildId);
 
   if (!repos.includes(repoName)) {
     return { success: false, reason: 'REPO_NOT_CONFIGURED' };

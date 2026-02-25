@@ -1,13 +1,7 @@
+import { Issue } from '@/domain/entities';
 import { octokit } from '../client';
 import { config } from '@/infrastructure/config';
 import { logger } from '@/lib';
-
-export interface Issue {
-  number: number;
-  title: string;
-  htmlUrl: string;
-  assignees: string[];
-}
 
 export class IssueService {
   static async create(

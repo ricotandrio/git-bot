@@ -6,6 +6,9 @@ function requireEnv(key: string): string {
 
 export const config = {
   NODE_ENV: process.env.NODE_ENV || 'development',
+  EXPRESS: {
+    PORT: parseInt(process.env.EXPRESS_PORT || '3000'),
+  },
   DISCORD: {
     BOT_TOKEN: requireEnv('DISCORD_BOT_TOKEN'),
     CLIENT_ID: requireEnv('DISCORD_CLIENT_ID'),

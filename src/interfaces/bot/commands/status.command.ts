@@ -1,8 +1,8 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
-import { IssueService } from '@/infrastructure/github/services/issue.service';
-import { Issue } from '@/infrastructure/github/services/issue.service';
 import { logger } from '@/lib';
 import { listRepositoriesFromDatabase } from '@/domain/usecases/repository.usecase';
+import { getIssues } from '@/domain/usecases/issue.usecase';
+import { Issue } from '@/domain/entities';
 
 export const data = new SlashCommandBuilder()
   .setName('status')
@@ -47,8 +47,17 @@ export async function execute(
   // fetch issues per repo in parallel
   const results = await Promise.all(
     repositories.map(async (repo) => {
-      const issues = await IssueService.getIssues(repo);
-      return { repo, issues };
+      const issues = await getIssues(guildId, repo);
+
+      if (!issues.success) {
+        logger.error(
+          { guildId, repo, reason: issues.reason },
+          'Failed to fetch issues for repository',
+        );
+        return { repo, issues: [] };
+      }
+
+      return { repo, issues: issues.issues };
     }),
   );
 

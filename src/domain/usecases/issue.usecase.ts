@@ -1,4 +1,4 @@
-import { IssueService } from '@/infrastructure/github/services';
+import { Issue, IssueService } from '@/infrastructure/github/services';
 import { DbGuildRepository, DbUserMappingRepository } from '@/infrastructure/db';
 
 // CREATE ISSUE
@@ -65,6 +65,30 @@ export async function assignIssue(
   try {
     await IssueService.assign(issueNumber, repoName, githubUsername);
     return { success: true };
+  } catch {
+    return { success: false, reason: 'EXTERNAL_ERROR' };
+  }
+}
+
+// GET ISSUES
+export type GetIssuesResult =
+  | { success: true; issues: Issue[] }
+  | { success: false; reason: 'REPO_NOT_CONFIGURED' }
+  | { success: false; reason: 'EXTERNAL_ERROR' };
+
+export async function getIssues(
+  guildId: string,
+  repoName: string,
+): Promise<GetIssuesResult> {
+  const repos = DbGuildRepository.getAll(guildId);
+
+  if (!repos.includes(repoName)) {
+    return { success: false, reason: 'REPO_NOT_CONFIGURED' };
+  }
+
+  try {
+    const issues = await IssueService.getIssues(repoName);
+    return { success: true, issues };
   } catch {
     return { success: false, reason: 'EXTERNAL_ERROR' };
   }

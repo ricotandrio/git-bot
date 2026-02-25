@@ -1,5 +1,5 @@
 import { IssueService } from '@/infrastructure/github/services';
-import { GuildRepository, UserMappingRepository } from '@/infrastructure/db';
+import { GuildRepository, UserMappingRepository } from '@/domain/repositories';
 
 // CREATE ISSUE
 export type CreateIssueResult =

@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
-import { GuildRepository } from '@/infrastructure/db';
+import { GuildRepository } from '@/domain/repositories';
 import { IssueService } from '@/infrastructure/github/services/issue.service';
 import { Issue } from '@/infrastructure/github/services/issue.service';
 
@@ -19,7 +19,7 @@ export async function execute(
     return;
   }
 
-  const repos = await GuildRepository.getAll(guildId);
+  const repos = GuildRepository.getAll(guildId);
 
   if (repos.length === 0) {
     await interaction.reply({

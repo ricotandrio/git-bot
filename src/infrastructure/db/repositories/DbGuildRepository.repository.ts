@@ -1,6 +1,6 @@
 import { db } from '../client';
 
-export class GuildRepository {
+export class DbGuildRepository {
   static add(guildId: string, repository: string) {
     db.prepare(
       `

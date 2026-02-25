@@ -1,4 +1,4 @@
-import { GuildRepository } from '@/infrastructure/db';
+import { GuildRepository } from '@/domain/repositories';
 
 // ADD REPOSITORY
 export type AddRepositoryResult =

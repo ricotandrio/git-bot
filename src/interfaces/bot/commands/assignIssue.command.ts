@@ -3,7 +3,7 @@ import {
   SlashCommandBuilder,
   AutocompleteInteraction,
 } from 'discord.js';
-import { GuildRepository } from '@/infrastructure/db';
+import { GuildRepository } from '@/domain/repositories';
 import { logger } from '@/lib';
 import { assignIssue } from '@/domain/usecases/issue.usecase';
 

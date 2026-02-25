@@ -1,6 +1,6 @@
 import { db } from '../client';
 
-export class UserMappingRepository {
+export class DbUserMappingRepository {
   static add(discordUserId: string, githubUsername: string) {
     db.prepare(
       `

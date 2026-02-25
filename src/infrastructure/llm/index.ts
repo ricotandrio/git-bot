@@ -1,3 +1,3 @@
-import { handleLLMCommand } from './client';
+import { model } from './client';
 
-export { handleLLMCommand };
+export { model };

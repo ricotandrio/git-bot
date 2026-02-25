@@ -4,7 +4,7 @@ import {
   SlashCommandBuilder,
 } from 'discord.js';
 import { logger } from '@/lib/logger';
-import { GuildRepository } from '@/infrastructure/db';
+import { GuildRepository } from '@/domain/repositories';
 import { createIssue } from '@/domain/usecases/issue.usecase';
 
 export const data = new SlashCommandBuilder()

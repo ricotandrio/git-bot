@@ -1,5 +1,5 @@
 import { initDb } from './client';
-import { GuildRepository } from './repositories/GuildRepository.repository';
-import { UserMappingRepository } from './repositories/UserMapping.repository';
+import { DbGuildRepository } from './repositories/DbGuildRepository.repository';
+import { DbUserMappingRepository } from './repositories/DbUserMapping.repository';
 
-export { initDb, GuildRepository, UserMappingRepository };
+export { initDb, DbGuildRepository, DbUserMappingRepository };

@@ -1,5 +1,6 @@
-import { Issue, IssueService } from '@/infrastructure/github/services';
+import { IssueService } from '@/infrastructure/github/services';
 import { DbGuildRepository, DbUserMappingRepository } from '@/infrastructure/db';
+import type { Issue } from '@/domain/entities';
 
 // CREATE ISSUE
 export type CreateIssueResult =

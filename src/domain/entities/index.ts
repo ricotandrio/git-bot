@@ -1,5 +1,1 @@
-import { Issue } from "./Issue";
-
-export type {
-  Issue,
-}
+export type { Issue } from './Issue';

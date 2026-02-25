@@ -1,4 +1,4 @@
-import { Issue } from '@/domain/entities';
+import type { Issue } from '@/domain/entities';
 import { octokit } from '../client';
 import { config } from '@/infrastructure/config';
 import { logger } from '@/lib';

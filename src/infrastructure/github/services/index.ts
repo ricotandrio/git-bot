@@ -1,5 +1,3 @@
-import { IssueService, Issue } from './issue.service';
+import { IssueService } from './issue.service';
 
 export { IssueService };
-
-export type { Issue };

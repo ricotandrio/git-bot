@@ -9,7 +9,7 @@
   "scripts": {
     "dev-bot": "dotenv -e .env.dev -- tsx watch src/main.bot.ts",
     "dev-api": "dotenv -e .env.dev -- tsx watch src/main.api.ts",
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "typecheck": "tsc --noEmit",
     "prod-bot": "dotenv -e .env.prod -- node dist/main.bot.js",
     "prod-api": "dotenv -e .env.prod -- node dist/main.api.js",
@@ -37,6 +37,7 @@
     "@types/pino": "^7.0.4",
     "dotenv-cli": "^11.0.0",
     "prettier": "^3.8.1",
+    "tsc-alias": "^1.8.10",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }

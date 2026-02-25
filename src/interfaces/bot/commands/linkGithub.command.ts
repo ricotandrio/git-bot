@@ -3,7 +3,7 @@ import {
   SlashCommandBuilder,
 } from 'discord.js';
 import { logger } from '@/lib';
-import { linkGithubAccount } from '@/domain/usecases/user.usecase';
+import { linkGithubAccount } from '@/application/usecases/user.usecase';
 
 export const data = new SlashCommandBuilder()
   .setName('link-github')

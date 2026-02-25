@@ -4,8 +4,8 @@ import {
   AutocompleteInteraction,
 } from 'discord.js';
 import { logger } from '@/lib';
-import { assignIssue } from '@/domain/usecases/issue.usecase';
-import { listRepositoriesFromDatabase } from '@/domain/usecases/repository.usecase';
+import { assignIssue } from '@/application/usecases/issue.usecase';
+import { listRepositoriesFromDatabase } from '@/application/usecases/repository.usecase';
 
 export const data = new SlashCommandBuilder()
   .setName('assign-issue')

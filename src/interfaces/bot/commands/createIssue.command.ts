@@ -4,8 +4,8 @@ import {
   SlashCommandBuilder,
 } from 'discord.js';
 import { logger } from '@/lib/logger';
-import { createIssue } from '@/domain/usecases/issue.usecase';
-import { listRepositoriesFromDatabase } from '@/domain/usecases/repository.usecase';
+import { createIssue } from '@/application/usecases/issue.usecase';
+import { listRepositoriesFromDatabase } from '@/application/usecases/repository.usecase';
 
 export const data = new SlashCommandBuilder()
   .setName('create-issue')

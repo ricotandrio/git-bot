@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { logger } from '@/lib';
-import { listRepositoriesFromDatabase } from '@/domain/usecases/repository.usecase';
-import { getIssues } from '@/domain/usecases/issue.usecase';
+import { listRepositoriesFromDatabase } from '@/application/usecases/repository.usecase';
+import { getIssues } from '@/application/usecases/issue.usecase';
 import { Issue } from '@/domain/entities';
 
 export const data = new SlashCommandBuilder()

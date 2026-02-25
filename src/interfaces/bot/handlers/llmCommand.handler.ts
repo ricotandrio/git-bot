@@ -1,8 +1,8 @@
 import { Message } from 'discord.js';
 import { logger } from '@/lib';
-import { listRepositoriesFromDatabase, removeRepositoryFromDatabase } from '@/domain/usecases/repository.usecase';
-import { assignIssue, createIssue } from '@/domain/usecases/issue.usecase';
-import { generateLLMResponse, ParsedCommand } from '@/domain/usecases/llm.usecase';
+import { listRepositoriesFromDatabase, removeRepositoryFromDatabase } from '@/application/usecases/repository.usecase';
+import { assignIssue, createIssue } from '@/application/usecases/issue.usecase';
+import { generateLLMResponse, ParsedCommand } from '@/application/usecases/llm.usecase';
 
 export async function handleLLMCommand(
   message: Message,

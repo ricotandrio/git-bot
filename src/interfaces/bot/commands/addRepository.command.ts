@@ -4,7 +4,7 @@ import {
   PermissionFlagsBits,
 } from 'discord.js';
 import { logger } from '@/lib';
-import { addRepositoryToDatabase } from '@/domain/usecases/repository.usecase';
+import { addRepositoryToDatabase } from '@/application/usecases/repository.usecase';
 
 export const data = new SlashCommandBuilder()
   .setName('add-repo')

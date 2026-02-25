@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { logger } from '@/lib';
-import { unlinkGithubAccount } from '@/domain/usecases/user.usecase';
+import { unlinkGithubAccount } from '@/application/usecases/user.usecase';
 
 export const data = new SlashCommandBuilder()
   .setName('unlink-github')

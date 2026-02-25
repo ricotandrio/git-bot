@@ -2,12 +2,7 @@ import { Message } from 'discord.js';
 import { logger } from '@/lib';
 import { listRepositoriesFromDatabase, removeRepositoryFromDatabase } from '@/domain/usecases/repository.usecase';
 import { assignIssue, createIssue } from '@/domain/usecases/issue.usecase';
-import { generateLLMResponse } from '@/domain/usecases/llm.usecase';
-
-type ParsedCommand = {
-  command: string;
-  args: Record<string, any>;
-};
+import { generateLLMResponse, ParsedCommand } from '@/domain/usecases/llm.usecase';
 
 export async function handleLLMCommand(
   message: Message,
@@ -21,12 +16,10 @@ export async function handleLLMCommand(
   }
 
   try {
-    const raw = await generateLLMResponse(content, guildId);
-    const parsed = parseCommand(raw);
-
+    const parsed = await generateLLMResponse(content, guildId);
     if (!parsed) {
       await message.reply(
-        '❌ Could not understand that. Try using slash commands directly.',
+        '❌ Sorry, I couldn\'t understand that. Try using slash commands directly.',
       );
       return;
     }

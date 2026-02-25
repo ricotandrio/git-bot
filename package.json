@@ -7,15 +7,12 @@
     "doc": "docs"
   },
   "scripts": {
-    "dev": "concurrently \"npm run dev-bot\" \"npm run dev-api\"",
-    "dev-bot": "npm run dev-deploy && dotenv -e .env.dev -- tsx watch src/interfaces/bot/index.ts",
-    "dev-api": "dotenv -e .env.dev -- tsx watch src/interfaces/api/index.ts",
-    "dev-deploy": "dotenv -e .env.dev -- tsx src/interfaces/bot/deploy.ts",
+    "dev-bot": "dotenv -e .env.dev -- tsx watch src/main.bot.ts",
+    "dev-api": "dotenv -e .env.dev -- tsx watch src/main.api.ts",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "prod": "concurrently \"npm run prod-bot\" \"npm run prod-api\"",
-    "prod-bot": "dotenv -e .env.prod -- node dist/interfaces/bot/index.js",
-    "prod-api": "dotenv -e .env.prod -- node dist/interfaces/api/index.js",
+    "prod-bot": "dotenv -e .env.prod -- node dist/main.bot.js",
+    "prod-api": "dotenv -e .env.prod -- node dist/main.api.js",
     "prettier": "npx prettier --write ."
   },
   "keywords": [],

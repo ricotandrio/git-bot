@@ -13,7 +13,10 @@
     "typecheck": "tsc --noEmit",
     "prod-bot": "dotenv -e .env.prod -- node dist/main.bot.js",
     "prod-api": "dotenv -e .env.prod -- node dist/main.api.js",
-    "prettier": "npx prettier --write ."
+    "prettier": "npx prettier --write .",
+    "docker:dev": "docker compose --env-file .env.dev up --build",
+    "docker:prod": "docker compose --env-file .env.prod up --build",
+    "docker:down": "docker compose down"
   },
   "keywords": [],
   "author": "",

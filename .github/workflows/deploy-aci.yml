@@ -1,0 +1,60 @@
+name: Build Push and Deploy to ACI
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Create .env for deployment
+        run: |
+          cat <<EOF > .env
+          NODE_ENV=production
+          PORT=3000
+          DISCORD_BOT_TOKEN=${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}
+          DISCORD_GUILD_ID=${{ secrets.DISCORD_GUILD_ID }}
+          GITHUB_PAT=${{ secrets.GITHUB_PAT }}
+          GITHUB_OWNER=${{ secrets.GITHUB_OWNER }}
+          GITHUB_REPO=${{ secrets.GITHUB_REPO }}
+          GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
+          ACR_NAME=${{ secrets.ACR_NAME }}
+          ACR_LOGIN_SERVER=${{ secrets.ACR_LOGIN_SERVER }}
+          ACR_USERNAME=${{ secrets.ACR_USERNAME }}
+          ACR_PASSWORD=${{ secrets.ACR_PASSWORD }}
+          AZURE_RESOURCE_GROUP=${{ secrets.AZURE_RESOURCE_GROUP }}
+          AZURE_LOCATION=${{ secrets.AZURE_LOCATION }}
+          ACI_API_NAME=${{ secrets.ACI_API_NAME }}
+          ACI_BOT_NAME=${{ secrets.ACI_BOT_NAME }}
+          ACI_API_DNS_LABEL=${{ secrets.ACI_API_DNS_LABEL }}
+          ACI_CPU=${{ secrets.ACI_CPU }}
+          ACI_MEMORY=${{ secrets.ACI_MEMORY }}
+          IMAGE_TAG=latest
+          API_IMAGE_NAME=git-bot-api
+          BOT_IMAGE_NAME=git-bot-bot
+          EOF
+
+      - name: Build Docker images
+        run: bash ./.github/scripts/build-dockerfile.sh
+
+      - name: Push images to ACR
+        run: bash ./.github/scripts/push-image-to-acr.sh
+
+      - name: Deploy containers to ACI
+        run: bash ./.github/scripts/deploy-to-aci.sh

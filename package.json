@@ -14,9 +14,14 @@
     "prod-bot": "dotenv -e .env.prod -- node dist/main.bot.js",
     "prod-api": "dotenv -e .env.prod -- node dist/main.api.js",
     "prettier": "npx prettier --write .",
-    "docker:dev": "docker compose --env-file .env.dev up --build",
-    "docker:prod": "docker compose --env-file .env.prod up --build",
-    "docker:down": "docker compose down"
+    "docker-compose:dev": "docker compose --env-file .env.dev up --build",
+    "docker-compose:prod": "docker compose --env-file .env.prod up --build",
+    "docker-compose:down": "docker compose down",
+    "docker:build": "docker build -f Dockerfile.api -t git-bot-api:latest . && docker build -f Dockerfile.bot -t git-bot-bot:latest .",
+    "docker:run-bot-dev": "docker run --env-file .env.dev git-bot-bot:latest",
+    "docker:run-api-dev": "docker run --env-file .env.dev -p 3000:3000 git-bot-api:latest",
+    "docker:run-bot-prod": "docker run --env-file .env.prod git-bot-bot:latest",
+    "docker:run-api-prod": "docker run --env-file .env.prod -p 3000:3000 git-bot-api:latest"
   },
   "keywords": [],
   "author": "",

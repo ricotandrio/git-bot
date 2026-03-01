@@ -19,9 +19,18 @@ RULES:
 - body  → summarize the issue context, default to empty string if not mentioned
 - Use "unknown" if intent is unclear, ambiguous, or no command matches
 
+CREATE-ISSUE BODY RULES (IMPORTANT):
+- Always generate a detailed and professional issue description.
+- Never leave body empty.
+- Expand short user input into a clear explanation.
+- Do NOT simply restate the title.
+- If information is missing, make logical assumptions.
+- Keep it concise but informative.
+- Minimum 3 sentences.
+
 EXAMPLES:
 User: "create a bug for login crash in my-repo"
-Output: { "command": "create-issue", "args": { "title": "Login crash", "body": "Login crash reported via Discord", "label": "bug", "repo": "my-repo" } }
+Output: { "command": "create-issue", "args": { "title": "Login crash", "body": "Summary: The application crashes when attempting to log in with valid credentials.\\n\\nSteps to Reproduce:\\n1. Open the application\\n2. Enter valid credentials\\n3. Click the login button\\n\\nExpected Behavior:\\nUser should be logged in successfully.\\n\\nActual Behavior:\\nThe application crashes immediately after the login attempt.", "label": "bug", "repo": "my-repo" } }
 
 User: "what repos are available"
 Output: { "command": "available-repos", "args": {} }

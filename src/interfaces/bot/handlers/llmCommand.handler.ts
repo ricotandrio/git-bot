@@ -87,7 +87,7 @@ async function handleAvailableRepos(
   message: Message,
   guildId: string,
 ): Promise<void> {
-  const result = await listRepositoriesFromDatabase(guildId);
+  const result = listRepositoriesFromDatabase(guildId);
 
   if (!result.success) {
     await message.reply('❌ Failed to retrieve repositories.');

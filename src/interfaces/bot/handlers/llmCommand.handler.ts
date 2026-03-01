@@ -32,14 +32,6 @@ export async function handleLLMCommand(
   }
 }
 
-function parseCommand(raw: string): ParsedCommand | null {
-  try {
-    return JSON.parse(raw) as ParsedCommand;
-  } catch {
-    return null;
-  }
-}
-
 async function executeCommand(
   message: Message,
   guildId: string,

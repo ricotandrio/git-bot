@@ -33,31 +33,3 @@ Use structured slash commands for precise control:
 | `/status` | View open issues across all repositories |
 | `/helps` | List all available commands |
 | `/ping` | Check bot latency |
-
-## Setup
-
-1. Clone the repository
-   ```bash
-   git clone https://github.com/your-username/git-bot.git
-   cd git-bot
-   ```
-
-2. Copy the environment file
-   ```bash
-   # for development
-   cp .env.example .env.dev
-
-   # for production
-   cp .env.example .env.prod
-   ```
-
-3. Fill in the values inside `.env.dev` or `.env.prod`
-
-4. Run with Docker
-   ```bash
-   # development
-   npm run docker:dev
-
-   # production
-   npm run docker:prod
-   ```

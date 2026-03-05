@@ -23,7 +23,7 @@ export async function createIssue(
 
   try {
     const issue = await IssueService.create(
-      title,
+      `[GITBOT] ${title}`,
       description,
       label,
       repoName,

@@ -64,7 +64,7 @@ export async function assignIssue(
   }
 
   try {
-    await IssueService.assign(issueNumber, repoName, githubUsername);
+    await IssueService.assign(issueNumber, githubUsername, repoName);
     return { success: true };
   } catch {
     return { success: false, reason: 'EXTERNAL_ERROR' };

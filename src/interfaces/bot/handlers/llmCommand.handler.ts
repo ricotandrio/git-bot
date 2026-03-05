@@ -3,6 +3,8 @@ import { logger } from '@/lib';
 import { listRepositoriesFromDatabase, removeRepositoryFromDatabase } from '@/application/usecases/repository.usecase';
 import { assignIssue, createIssue } from '@/application/usecases/issue.usecase';
 import { generateLLMResponse, ParsedCommand } from '@/application/usecases/llm.usecase';
+import { notifyIssueAssignment } from '@/interfaces/bot/services/assignmentNotification.service';
+import { getStandupChannelId } from '@/interfaces/bot/runtimeConfig';
 
 export async function handleLLMCommand(
   message: Message,
@@ -198,6 +200,14 @@ async function handleAssignIssue(
   }
 
   await message.reply(`✅ Issue **#${issueNumber}** assigned successfully.`);
+
+  await notifyIssueAssignment({
+    client: message.client,
+    channelId: getStandupChannelId() ?? message.channelId,
+    discordUserId,
+    repoName: repo,
+    issueNumber,
+  });
 }
 
 async function handleUnknown(

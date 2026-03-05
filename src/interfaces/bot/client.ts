@@ -1,6 +1,7 @@
 import { Client, GatewayIntentBits, REST, Routes } from 'discord.js';
 import { commands } from '@/interfaces/bot/commands';
 import { registerHandlers } from '@/interfaces/bot/handlers';
+import { setBotRuntimeConfig } from '@/interfaces/bot/runtimeConfig';
 import { logger } from '@/lib';
 
 
@@ -41,6 +42,7 @@ export async function startBot(
   BOT_TOKEN: string,
   CLIENT_ID: string,
   GUILD_ID: string,
+  STANDUP_CHANNEL_ID: string,
 ) {
   const client = new Client({
     intents: [
@@ -52,6 +54,10 @@ export async function startBot(
   });
 
   const rest = new REST().setToken(BOT_TOKEN);
+
+  setBotRuntimeConfig({
+    standupChannelId: STANDUP_CHANNEL_ID,
+  });
 
   await deployBot(rest, CLIENT_ID, GUILD_ID);
 

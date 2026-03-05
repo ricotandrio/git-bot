@@ -6,6 +6,8 @@ import {
 import { logger } from '@/lib';
 import { assignIssue } from '@/application/usecases/issue.usecase';
 import { listRepositoriesFromDatabase } from '@/application/usecases/repository.usecase';
+import { notifyIssueAssignment } from '@/interfaces/bot/services/assignmentNotification.service';
+import { getStandupChannelId } from '@/interfaces/bot/runtimeConfig';
 
 export const data = new SlashCommandBuilder()
   .setName('assign-issue')
@@ -47,7 +49,7 @@ export async function execute(
   const discordUser = interaction.options.getUser('user', true);
   const repoName = interaction.options.getString('repository', true);
 
-  await interaction.deferReply();
+  await interaction.deferReply({ ephemeral: true });
 
   const result = await assignIssue(
     guildId,
@@ -86,6 +88,14 @@ export async function execute(
   await interaction.editReply(
     `✅ Issue **#${issueNumber}** in **${repoName}** assigned to <@${discordUser.id}>.`,
   );
+
+  await notifyIssueAssignment({
+    client: interaction.client,
+    channelId: getStandupChannelId() ?? interaction.channelId,
+    discordUserId: discordUser.id,
+    repoName,
+    issueNumber,
+  });
 }
 
 export async function autocomplete(

@@ -10,6 +10,7 @@ async function main() {
     config.DISCORD.BOT_TOKEN,
     config.DISCORD.CLIENT_ID,
     config.DISCORD.GUILD_ID,
+    config.DISCORD.DISCORD_STANDUP_CHANNEL_ID,
   );
 }
 

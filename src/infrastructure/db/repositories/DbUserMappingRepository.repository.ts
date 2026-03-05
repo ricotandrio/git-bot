@@ -4,7 +4,7 @@ export class DbUserMappingRepository {
   static add(discordUserId: string, githubUsername: string) {
     db.prepare(
       `
-      INSERT OR REPLACE INTO user_mappings (discord_user_id, github_username)
+      INSERT OR REPLACE INTO user_mappings (discord_id, github_username)
       VALUES (?, ?)
     `,
     ).run(discordUserId, githubUsername);
@@ -24,7 +24,7 @@ export class DbUserMappingRepository {
       .prepare(
         `
       SELECT github_username FROM user_mappings
-      WHERE discord_user_id = ?
+      WHERE discord_id = ?
     `,
       )
       .get(discordUserId) as { github_username: string } | undefined;

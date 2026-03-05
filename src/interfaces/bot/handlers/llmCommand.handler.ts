@@ -137,12 +137,24 @@ async function handleCreateIssue(
 ): Promise<void> {
   const { title, body, label, repo } = parsed.args;
 
+  const repositories = listRepositoriesFromDatabase(guildId);
+  
+  if (!repositories.success) {
+    await message.reply('❌ Failed to retrieve repositories.');
+    return;
+  }
+
+  if (repo && !repositories.repositories.includes(repo)) {
+    await message.reply(`❌ Repository **${repo}** is not configured for this server.`);
+    return;
+  }
+
   const result = await createIssue(
     guildId,
     repo,
-    title ?? 'New Issue',
-    body ?? '',
-    label ?? 'bug',
+    title,
+    body,
+    label,
   );
 
   if (!result.success) {

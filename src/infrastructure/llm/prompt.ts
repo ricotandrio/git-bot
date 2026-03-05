@@ -27,10 +27,11 @@ CREATE-ISSUE BODY RULES (IMPORTANT):
 - If information is missing, make logical assumptions.
 - Keep it concise but informative.
 - Minimum 3 sentences.
+- Use markdown formatting
 
 EXAMPLES:
 User: "create a bug for login crash in my-repo"
-Output: { "command": "create-issue", "args": { "title": "Login crash", "body": "Summary: The application crashes when attempting to log in with valid credentials.\\n\\nSteps to Reproduce:\\n1. Open the application\\n2. Enter valid credentials\\n3. Click the login button\\n\\nExpected Behavior:\\nUser should be logged in successfully.\\n\\nActual Behavior:\\nThe application crashes immediately after the login attempt.", "label": "bug", "repo": "my-repo" } }
+Output: { "command": "create-issue", "args": { "title": "Login crash", "body": "## Summary\nThe application crashes when attempting to log in with valid credentials.\n\n## Steps to Reproduce\n1. Open the application\n2. Enter valid credentials\n3. Click the login button\n\n## Expected Behavior\nUser should be logged in successfully.\n\n## Actual Behavior\nThe application crashes immediately after the login attempt.", "label": "bug", "repo": "my-repo" } }
 
 User: "what repos are available"
 Output: { "command": "available-repos", "args": {} }

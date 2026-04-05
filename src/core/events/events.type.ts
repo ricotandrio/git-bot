@@ -3,13 +3,6 @@ export type AnalyticsEventMap = {
     command: string;
     userId: string;
     success: boolean;
-    latency: number;
-  };
-
-  "github.issue_updated": {
-    issueId: number;
-    repo: string;
-    userId: string;
   };
 };
 

@@ -1,7 +1,7 @@
 import { Integration } from "../integration.interface";
 import { GITBOT_PROMPT } from "./prompts";
 import { ASSISTANT_PROMPT } from "./prompts/assistant.prompt";
-import { LLMProvider } from "./providers/llm.provider";
+import { LLMProvider } from "./llm.types";
 import { OpenAIProvider } from "./providers/openai/openai.provider";
 import { GeminiProvider } from "./providers/gemini/gemini.provider";
 

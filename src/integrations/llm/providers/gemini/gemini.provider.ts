@@ -1,5 +1,5 @@
 import { GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
-import { LLMProvider } from "../llm.provider";
+import { LLMProvider } from "../../llm.types";
 
 export class GeminiProvider implements LLMProvider {
   private client: GoogleGenerativeAI;

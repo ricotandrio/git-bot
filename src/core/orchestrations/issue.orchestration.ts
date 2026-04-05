@@ -1,7 +1,7 @@
 import { config } from '@/config';
 import { dbIntegration } from '@/integrations/db';
-import { getGuildRepositories } from '@/integrations/db/guildRepositories';
-import { getUserMapping } from '@/integrations/db/userMappings';
+import { getGuildRepositories } from '@/integrations/db/guild-repositories';
+import { getUserMapping } from '@/integrations/db/user-mappings';
 import { githubIntegration } from '@/integrations/github';
 
 export type Issue = {

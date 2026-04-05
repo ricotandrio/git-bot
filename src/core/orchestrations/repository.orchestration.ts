@@ -3,7 +3,7 @@ import {
   addGuildRepository,
   getGuildRepositories,
   removeGuildRepository,
-} from '@/integrations/db/guildRepositories';
+} from '@/integrations/db/guild-repositories';
 
 export type AddRepositoryResult =
   | { success: true; repoName: string }

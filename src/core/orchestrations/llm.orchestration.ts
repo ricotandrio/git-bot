@@ -1,7 +1,7 @@
 import { config } from '@/config';
 import { logger } from '@/utils';
 import { dbIntegration } from '@/integrations/db';
-import { getGuildRepositories } from '@/integrations/db/guildRepositories';
+import { getGuildRepositories } from '@/integrations/db/guild-repositories';
 import { llmIntegration } from '@/integrations/llm';
 
 export type ParsedCommand = {

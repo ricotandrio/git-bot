@@ -2,7 +2,7 @@ import { Client, GatewayIntentBits, REST, Routes } from 'discord.js';
 import { dbIntegration } from '@/integrations/db';
 import { commands } from '@/interfaces/bot/commands';
 import { registerHandlers } from '@/interfaces/bot/handlers';
-import { setBotRuntimeConfig } from '@/interfaces/bot/runtimeConfig';
+import { setBotRuntimeConfig } from '@/interfaces/bot/runtime-config';
 import { logger } from '@/utils';
 
 

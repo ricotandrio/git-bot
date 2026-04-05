@@ -8,8 +8,8 @@ import {
   removeRepositoryFromDatabase,
   type ParsedCommand,
 } from '@/core/orchestrations';
-import { notifyIssueAssignment } from '@/interfaces/bot/services/assignmentNotification.service';
-import { getStandupChannelId } from '@/interfaces/bot/runtimeConfig';
+import { notifyIssueAssignment } from '@/interfaces/bot/services/assignment-notification.service';
+import { getStandupChannelId } from '@/interfaces/bot/runtime-config';
 
 export async function handleLLMCommand(
   message: Message,

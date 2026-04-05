@@ -1,8 +1,8 @@
 import type { DbClient } from '../../db.client';
-import type { AddGuildRepositoryPayload } from '../guildRepositories.types';
+import type { AddGuildRepositoryPayload } from '../guild-repositories.types';
 
 export function addGuildRepository(
-  db: ReturnType<DbClient['getDbClient']>,
+  db: ReturnType<DbClient['getDb']>,
   payload: AddGuildRepositoryPayload,
 ): void {
   db.prepare(

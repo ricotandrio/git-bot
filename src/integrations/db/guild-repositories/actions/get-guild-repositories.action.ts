@@ -2,10 +2,10 @@ import type { DbClient } from '../../db.client';
 import type {
   GetGuildRepositoriesPayload,
   GuildRepositoryRow,
-} from '../guildRepositories.types';
+} from '../guild-repositories.types';
 
 export function getGuildRepositories(
-  db: ReturnType<DbClient['getDbClient']>,
+  db: ReturnType<DbClient['getDb']>,
   payload: GetGuildRepositoriesPayload,
 ): string[] {
   const rows = db

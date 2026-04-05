@@ -1,3 +1,3 @@
-export * from "./actions/getRepositories.action";
+export * from "./actions/get-repositories.action";
 
 export * from "./repository.types";

@@ -1,8 +1,8 @@
 import type { DbClient } from '../../db.client';
-import type { RemoveGuildRepositoryPayload } from '../guildRepositories.types';
+import type { RemoveGuildRepositoryPayload } from '../guild-repositories.types';
 
 export function removeGuildRepository(
-  db: ReturnType<DbClient['getDbClient']>,
+  db: ReturnType<DbClient['getDb']>,
   payload: RemoveGuildRepositoryPayload,
 ): void {
   db.prepare(

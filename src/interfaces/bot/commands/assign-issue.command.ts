@@ -5,8 +5,8 @@ import {
 } from 'discord.js';
 import { logger } from '@/utils';
 import { assignIssue, listRepositoriesFromDatabase } from '@/core/orchestrations';
-import { notifyIssueAssignment } from '@/interfaces/bot/services/assignmentNotification.service';
-import { getStandupChannelId } from '@/interfaces/bot/runtimeConfig';
+import { notifyIssueAssignment } from '@/interfaces/bot/services/assignment-notification.service';
+import { getStandupChannelId } from '@/interfaces/bot/runtime-config';
 
 export const data = new SlashCommandBuilder()
   .setName('assign-issue')

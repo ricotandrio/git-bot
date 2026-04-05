@@ -1,8 +1,8 @@
 import type { DbClient } from '../../db.client';
-import type { SetUserMappingPayload } from '../userMappings.types';
+import type { SetUserMappingPayload } from '../user-mappings.types';
 
 export function setUserMapping(
-  db: ReturnType<DbClient['getDbClient']>,
+  db: ReturnType<DbClient['getDb']>,
   payload: SetUserMappingPayload,
 ): void {
   db.prepare(

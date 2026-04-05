@@ -3,7 +3,7 @@ import {
   deleteUserMapping,
   getUserMapping,
   setUserMapping,
-} from '@/integrations/db/userMappings';
+} from '@/integrations/db/user-mappings';
 
 export type LinkGithubAccountResult =
   | { success: true; githubUsername: string }

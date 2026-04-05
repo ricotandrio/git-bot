@@ -1,8 +1,8 @@
 import type { DbClient } from '../../db.client';
-import type { GetUserMappingPayload, UserMappingRow } from '../userMappings.types';
+import type { GetUserMappingPayload, UserMappingRow } from '../user-mappings.types';
 
 export function getUserMapping(
-  db: ReturnType<DbClient['getDbClient']>,
+  db: ReturnType<DbClient['getDb']>,
   payload: GetUserMappingPayload,
 ): UserMappingRow | null {
   const row = db

@@ -3,6 +3,7 @@ import { dbIntegration } from '@/integrations/db';
 import { getGuildRepositories } from '@/integrations/db/guild-repositories';
 import { getUserMapping } from '@/integrations/db/user-mappings';
 import { githubIntegration } from '@/integrations/github';
+import { eventBus } from '../events';
 
 export type Issue = {
   number: number;
@@ -51,11 +52,23 @@ export async function createIssue(
       label,
     }) as { html_url: string };
 
+    eventBus.emit('issue.created', {
+      guildId,
+      repoName,
+      issueNumber: issue.html_url.split('/').pop() ?? '',
+    });
+
     return {
       success: true,
       issueUrl: issue.html_url,
     };
   } catch {
+
+    eventBus.emit('issue.creation_failed', {
+      guildId,
+      repoName,
+    });
+
     return { success: false, reason: 'EXTERNAL_ERROR' };
   }
 }

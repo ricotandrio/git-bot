@@ -6,7 +6,7 @@ import { OpenAIProvider } from './providers/openai/openai.provider';
 import { GeminiProvider } from './providers/gemini/gemini.provider';
 
 export class LLMIntegration implements Integration {
-  name = 'gemini';
+  name = 'llm';
 
   private client!: LLMProvider;
 
@@ -15,8 +15,10 @@ export class LLMIntegration implements Integration {
 
     if (providerName === 'openai') {
       this.client = new OpenAIProvider(apiKey);
+      this.name = 'openai';
     } else if (providerName === 'gemini') {
       this.client = new GeminiProvider(apiKey);
+      this.name = 'gemini';
     } else {
       throw new Error(`LLM provider ${providerName} not supported`);
     }

@@ -50,12 +50,12 @@ export async function createIssue(
       title: `[GITBOT] ${title}`,
       body: description,
       label,
-    })) as { html_url: string };
+    })) as { html_url: string; number: number };
 
     eventBus.emit('issue.created', {
       guildId,
       repoName,
-      issueNumber: issue.html_url.split('/').pop() ?? '',
+      issueNumber: issue.number,
     });
 
     return {

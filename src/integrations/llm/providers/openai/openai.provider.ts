@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 
-export class OpenAIClient {
+export class OpenAIProvider {
   private client: OpenAI;
   private model: string;
 

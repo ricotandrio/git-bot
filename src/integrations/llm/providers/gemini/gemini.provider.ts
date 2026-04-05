@@ -1,6 +1,6 @@
 import { GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
 
-export class GeminiClient {
+export class GeminiProvider {
   private client: GoogleGenerativeAI;
   private model: GenerativeModel;
 

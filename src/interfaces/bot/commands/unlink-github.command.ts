@@ -24,10 +24,7 @@ export async function execute(
         return;
 
       case 'PERSISTENCE_ERROR':
-        logger.error(
-          { discordUserId },
-          'Failed to unlink GitHub account',
-        );
+        logger.error({ discordUserId }, 'Failed to unlink GitHub account');
         await interaction.editReply(
           '❌ Failed to unlink account. Please try again.',
         );
@@ -35,7 +32,5 @@ export async function execute(
     }
   }
 
-  await interaction.editReply(
-    `✅ Your GitHub account has been unlinked.`,
-  );
+  await interaction.editReply(`✅ Your GitHub account has been unlinked.`);
 }

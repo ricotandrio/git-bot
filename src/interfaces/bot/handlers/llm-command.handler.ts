@@ -18,7 +18,9 @@ export async function handleLLMCommand(
   const guildId = message.guildId;
 
   if (!guildId) {
-    await message.reply('❌ This command can only be used in a server channel.');
+    await message.reply(
+      '❌ This command can only be used in a server channel.',
+    );
     return;
   }
 
@@ -26,7 +28,7 @@ export async function handleLLMCommand(
     const parsed = await generateLLMResponse(content, guildId);
     if (!parsed) {
       await message.reply(
-        '❌ Sorry, I couldn\'t understand that. Try using slash commands directly.',
+        "❌ Sorry, I couldn't understand that. Try using slash commands directly.",
       );
       return;
     }
@@ -106,7 +108,9 @@ async function handleAvailableRepos(
     return;
   }
 
-  await message.reply(`Available repositories: ${result.repositories.join(', ')}`);
+  await message.reply(
+    `Available repositories: ${result.repositories.join(', ')}`,
+  );
 }
 
 async function handleRemoveRepo(
@@ -145,24 +149,20 @@ async function handleCreateIssue(
   const { title, body, label, repo } = parsed.args;
 
   const repositories = listRepositoriesFromDatabase(guildId);
-  
+
   if (!repositories.success) {
     await message.reply('❌ Failed to retrieve repositories.');
     return;
   }
 
   if (repo && !repositories.repositories.includes(repo)) {
-    await message.reply(`❌ Repository **${repo}** is not configured for this server.`);
+    await message.reply(
+      `❌ Repository **${repo}** is not configured for this server.`,
+    );
     return;
   }
 
-  const result = await createIssue(
-    guildId,
-    repo,
-    title,
-    body,
-    label,
-  );
+  const result = await createIssue(guildId, repo, title, body, label);
 
   if (!result.success) {
     if (result.reason === 'REPO_NOT_CONFIGURED') {

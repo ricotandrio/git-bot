@@ -1,1 +1,1 @@
-export * from "./gitbot.prompt";
+export * from './gitbot.prompt';

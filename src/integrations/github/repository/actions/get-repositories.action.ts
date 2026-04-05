@@ -1,9 +1,9 @@
-import { GithubClient } from "../../github.client";
-import { GetRepositoriesPayload } from "../repository.types";
+import { GithubClient } from '../../github.client';
+import { GetRepositoriesPayload } from '../repository.types';
 
 export const getRepositories = async (
   client: GithubClient,
-  payload: GetRepositoriesPayload
+  payload: GetRepositoriesPayload,
 ) => {
   const octokit = client.getClient();
 

@@ -26,12 +26,11 @@ export async function generateLLMResponse(
 
   try {
     const prompt =
-      `Available repos: ${repos.join(', ')}\n` +
-      `User message: ${content}`;
+      `Available repos: ${repos.join(', ')}\n` + `User message: ${content}`;
 
     logger.info(prompt);
 
-    const raw = await llmIntegration.execute('git_bot', prompt) as string;
+    const raw = (await llmIntegration.execute('git_bot', prompt)) as string;
 
     logger.info({ raw }, 'Gemini raw response');
 

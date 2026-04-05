@@ -14,7 +14,7 @@ export type DbConnection = {
 
 export class DbClient {
   private db: Database.Database;
-  
+
   constructor(dbPath: string) {
     this.db = new Database(dbPath);
   }

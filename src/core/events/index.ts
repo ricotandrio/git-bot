@@ -1,6 +1,6 @@
-import { EventBus } from "./event-bus";
+import { EventBus } from './event-bus';
 
-export * from "./event-bus";
-export * from "./events.type";
+export * from './event-bus';
+export * from './events.type';
 
 export const eventBus = new EventBus();

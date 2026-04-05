@@ -44,13 +44,13 @@ export async function createIssue(
   }
 
   try {
-    const issue = await githubIntegration.execute('create_issue', {
+    const issue = (await githubIntegration.execute('create_issue', {
       owner: config.GITHUB.OWNER,
       repo: repoName,
       title: `[GITBOT] ${title}`,
       body: description,
       label,
-    }) as { html_url: string };
+    })) as { html_url: string };
 
     eventBus.emit('issue.created', {
       guildId,
@@ -63,7 +63,6 @@ export async function createIssue(
       issueUrl: issue.html_url,
     };
   } catch {
-
     eventBus.emit('issue.creation_failed', {
       guildId,
       repoName,
@@ -118,11 +117,11 @@ export async function getIssues(
   }
 
   try {
-    const issues = await githubIntegration.execute('get_issues', {
+    const issues = (await githubIntegration.execute('get_issues', {
       owner: config.GITHUB.OWNER,
       repo: repoName,
       state: 'open',
-    }) as Array<{
+    })) as Array<{
       number: number;
       title: string;
       body?: string | null;

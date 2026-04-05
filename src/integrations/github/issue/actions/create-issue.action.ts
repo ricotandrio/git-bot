@@ -1,9 +1,9 @@
-import { GithubClient } from "../../github.client";
-import { CreateIssuePayload } from "../issue.types";
+import { GithubClient } from '../../github.client';
+import { CreateIssuePayload } from '../issue.types';
 
 export const createIssue = async (
   client: GithubClient,
-  payload: CreateIssuePayload
+  payload: CreateIssuePayload,
 ) => {
   const octokit = client.getClient();
 

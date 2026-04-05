@@ -1,8 +1,16 @@
-import { Integration } from "../integration.interface";
-import { DbClient } from "./db.client";
+import { Integration } from '../integration.interface';
+import { DbClient } from './db.client';
 import { DbAction } from './db.types';
-import { addGuildRepository, removeGuildRepository, getGuildRepositories } from "./guild-repositories";
-import { getUserMapping, setUserMapping, deleteUserMapping } from "./user-mappings";
+import {
+  addGuildRepository,
+  removeGuildRepository,
+  getGuildRepositories,
+} from './guild-repositories';
+import {
+  getUserMapping,
+  setUserMapping,
+  deleteUserMapping,
+} from './user-mappings';
 
 export class DBIntegration implements Integration {
   name = 'db';

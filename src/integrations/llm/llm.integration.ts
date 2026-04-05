@@ -1,24 +1,21 @@
-import { Integration } from "../integration.interface";
-import { GITBOT_PROMPT } from "./prompts";
-import { ASSISTANT_PROMPT } from "./prompts/assistant.prompt";
-import { LLMProvider } from "./llm.types";
-import { OpenAIProvider } from "./providers/openai/openai.provider";
-import { GeminiProvider } from "./providers/gemini/gemini.provider";
+import { Integration } from '../integration.interface';
+import { GITBOT_PROMPT } from './prompts';
+import { ASSISTANT_PROMPT } from './prompts/assistant.prompt';
+import { LLMProvider } from './llm.types';
+import { OpenAIProvider } from './providers/openai/openai.provider';
+import { GeminiProvider } from './providers/gemini/gemini.provider';
 
 export class LLMIntegration implements Integration {
-  name = "gemini";
+  name = 'gemini';
 
   private client!: LLMProvider;
 
-  async connect(config: { 
-    apiKey: string; 
-    providerName: "openai" | "gemini"; 
-  }) {
+  async connect(config: { apiKey: string; providerName: 'openai' | 'gemini' }) {
     const { apiKey, providerName } = config;
 
-    if (providerName === "openai") {
+    if (providerName === 'openai') {
       this.client = new OpenAIProvider(apiKey);
-    } else if (providerName === "gemini") {
+    } else if (providerName === 'gemini') {
       this.client = new GeminiProvider(apiKey);
     } else {
       throw new Error(`LLM provider ${providerName} not supported`);
@@ -27,9 +24,9 @@ export class LLMIntegration implements Integration {
 
   async execute(action: string, payload: any) {
     switch (action) {
-      case "ask_question":
+      case 'ask_question':
         return this.client.generate(ASSISTANT_PROMPT, payload.prompt);
-      case "git_bot":
+      case 'git_bot':
         return this.client.generate(GITBOT_PROMPT, payload);
       default:
         throw new Error(`Action ${action} not supported`);

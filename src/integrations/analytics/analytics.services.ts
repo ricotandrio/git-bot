@@ -1,4 +1,4 @@
-import { AnalyticsProvider } from "./analytics.types";
+import { AnalyticsProvider } from './analytics.types';
 
 export class AnalyticsService {
   constructor(private provider: AnalyticsProvider) {}

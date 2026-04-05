@@ -1,5 +1,5 @@
-import { GithubClient } from "../../github.client";
-import { AssignIssuePayload } from "../issue.types";
+import { GithubClient } from '../../github.client';
+import { AssignIssuePayload } from '../issue.types';
 
 export const assignIssue = async (
   client: GithubClient,

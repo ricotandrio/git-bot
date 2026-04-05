@@ -1,7 +1,4 @@
-import {
-  ChatInputCommandInteraction,
-  SlashCommandBuilder,
-} from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { logger } from '@/utils';
 import { linkGithubAccount } from '@/core/orchestrations';
 
@@ -30,7 +27,7 @@ export async function execute(
       case 'ALREADY_LINKED':
         await interaction.editReply(
           `⚠️ You already have a linked GitHub account: **${result.existingUsername}**.\n` +
-          `Run \`/unlink-github\` first if you want to change it.`,
+            `Run \`/unlink-github\` first if you want to change it.`,
         );
         return;
 
@@ -54,6 +51,6 @@ export async function execute(
 
   await interaction.editReply(
     `✅ Successfully linked your Discord account to GitHub **${result.githubUsername}**.\n` +
-    `You can now be assigned to issues using \`/assign-issue\`.`,
+      `You can now be assigned to issues using \`/assign-issue\`.`,
   );
 }

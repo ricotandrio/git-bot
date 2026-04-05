@@ -1,5 +1,5 @@
 export type AnalyticsEventMap = {
-  "command.executed": {
+  'command.executed': {
     command: string;
     userId: string;
     success: boolean;

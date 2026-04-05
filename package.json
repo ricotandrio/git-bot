@@ -1,10 +1,17 @@
 {
   "name": "git-bot",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
+  "authors": [
+    "@ricotandrio"
+  ],
+  "keywords": [],
   "main": "index.js",
   "directories": {
     "doc": "docs"
+  },
+  "bugs": {
+    "url": "https://github.com/ricotandrio/git-bot/issues"
   },
   "scripts": {
     "dev-bot": "dotenv -e .env.dev -- tsx watch src/main.bot.ts",
@@ -23,8 +30,6 @@
     "docker:run-bot-prod": "docker run --env-file .env.prod git-bot-bot:latest",
     "docker:run-api-prod": "docker run --env-file .env.prod -p 3000:3000 git-bot-api:latest"
   },
-  "keywords": [],
-  "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {

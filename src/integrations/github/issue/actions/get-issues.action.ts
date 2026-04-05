@@ -1,5 +1,5 @@
-import { GithubClient } from "../../github.client";
-import { GetIssuesPayload } from "../issue.types";
+import { GithubClient } from '../../github.client';
+import { GetIssuesPayload } from '../issue.types';
 
 export const getIssues = async (
   client: GithubClient,
@@ -18,6 +18,6 @@ export const getIssues = async (
     title: issue.title,
     body: issue.body,
     htmlUrl: issue.html_url,
-    assignees: issue.assignees?.map(assignee => assignee.login),
+    assignees: issue.assignees?.map((assignee) => assignee.login),
   }));
 };

@@ -20,13 +20,16 @@ export async function notifyIssueAssignment({
     const channel = await client.channels.fetch(channelId);
 
     if (!channel || !channel.isTextBased() || !channel.isSendable()) {
-      logger.warn({ channelId }, 'Assignment notification channel is not text-based');
+      logger.warn(
+        { channelId },
+        'Assignment notification channel is not text-based',
+      );
       return;
     }
 
     await channel.send(
       `✅ <@${discordUserId}> has been assigned to issue **#${issueNumber}** in **${repoName}**.`,
-    ); 
+    );
   } catch (error) {
     logger.error(
       { error, channelId, discordUserId, issueNumber, repoName },

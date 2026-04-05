@@ -1,1 +1,1 @@
-export * from "./console.provider";
+export * from './console.provider';

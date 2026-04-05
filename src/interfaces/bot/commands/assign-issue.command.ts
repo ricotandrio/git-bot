@@ -4,7 +4,10 @@ import {
   AutocompleteInteraction,
 } from 'discord.js';
 import { logger } from '@/utils';
-import { assignIssue, listRepositoriesFromDatabase } from '@/core/orchestrations';
+import {
+  assignIssue,
+  listRepositoriesFromDatabase,
+} from '@/core/orchestrations';
 import { notifyIssueAssignment } from '@/interfaces/bot/services/assignment-notification.service';
 import { getStandupChannelId } from '@/interfaces/bot/runtime-config';
 
@@ -62,7 +65,7 @@ export async function execute(
       case 'USER_NOT_LINKED':
         await interaction.editReply(
           `❌ <@${discordUser.id}> hasn't linked their GitHub account yet.\n` +
-          `Ask them to run \`/link-github\` first.`,
+            `Ask them to run \`/link-github\` first.`,
         );
         return;
 

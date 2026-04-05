@@ -1,12 +1,14 @@
-import { config } from "@/config";
+import { config } from '@/config';
 
-import { startBot } from "@/interfaces/bot/client";
-import { githubIntegration } from "./integrations/github";
-import { llmIntegration } from "./integrations/llm";
-import { dbIntegration } from "./integrations/db";
-import { eventBus } from "./core/events";
-import { analyticsService, registerAnalyticsConsumer } from "./integrations/analytics";
-
+import { startBot } from '@/interfaces/bot/client';
+import { githubIntegration } from './integrations/github';
+import { llmIntegration } from './integrations/llm';
+import { dbIntegration } from './integrations/db';
+import { eventBus } from './core/events';
+import {
+  analyticsService,
+  registerAnalyticsConsumer,
+} from './integrations/analytics';
 
 async function main() {
   registerAnalyticsConsumer(eventBus, analyticsService);

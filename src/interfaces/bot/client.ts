@@ -5,7 +5,6 @@ import { registerHandlers } from '@/interfaces/bot/handlers';
 import { setBotRuntimeConfig } from '@/interfaces/bot/runtime-config';
 import { logger } from '@/utils';
 
-
 export async function deployBot(
   rest: REST,
   CLIENT_ID: string,
@@ -21,13 +20,9 @@ export async function deployBot(
       process.exit(0);
     }
 
-    await rest.put(
-      Routes.applicationGuildCommands(
-        CLIENT_ID,
-        GUILD_ID,
-      ),
-      { body: body },
-    );
+    await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
+      body: body,
+    });
 
     logger.info(
       { count: body.length },

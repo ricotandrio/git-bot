@@ -1,3 +1,3 @@
-import { LLMIntegration } from "./llm.integration";
+import { LLMIntegration } from './llm.integration';
 
 export const llmIntegration = new LLMIntegration();

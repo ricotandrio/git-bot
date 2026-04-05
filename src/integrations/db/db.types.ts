@@ -6,4 +6,4 @@ export type DbAction =
   | 'set_user_mapping'
   | 'delete_user_mapping';
 
-export type DbActionPayload = {}
+export type DbActionPayload = {};

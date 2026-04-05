@@ -4,7 +4,10 @@ import {
   SlashCommandBuilder,
 } from 'discord.js';
 import { logger } from '@/utils/logger';
-import { createIssue, listRepositoriesFromDatabase } from '@/core/orchestrations';
+import {
+  createIssue,
+  listRepositoriesFromDatabase,
+} from '@/core/orchestrations';
 
 export const data = new SlashCommandBuilder()
   .setName('create-issue')
@@ -75,10 +78,7 @@ export async function execute(
         return;
 
       case 'EXTERNAL_ERROR':
-        logger.error(
-          { guildId, repoName, title },
-          'Failed to create issue',
-        );
+        logger.error({ guildId, repoName, title }, 'Failed to create issue');
         await interaction.editReply(
           '❌ Failed to create issue. Please try again later.',
         );
@@ -86,9 +86,7 @@ export async function execute(
     }
   }
 
-  await interaction.editReply(
-    `✅ Issue created → ${result.issueUrl}`,
-  );
+  await interaction.editReply(`✅ Issue created → ${result.issueUrl}`);
 }
 
 export async function autocomplete(

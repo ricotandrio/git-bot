@@ -1,24 +1,24 @@
 type Handler<T> = (payload: T) => void | Promise<void>;
 
-export class EventBus {
-  private handlers: Record<string, Handler<any>[]> = {};
+export class EventBus<Events extends Record<string, unknown> = Record<string, unknown>> {
+  private handlers: { [K in keyof Events]?: Handler<Events[K]>[] } = {};
 
-  on<T extends string>(event: T, handler: Handler<any>) {
+  on<K extends keyof Events>(event: K, handler: Handler<Events[K]>) {
     if (!this.handlers[event]) {
       this.handlers[event] = [];
     }
-    this.handlers[event].push(handler);
+    this.handlers[event]!.push(handler);
   }
 
-  emit(event: string, payload: any) {
-    const handlers = this.handlers[event] || [];
+  emit<K extends keyof Events>(event: K, payload: Events[K]) {
+    const handlers = this.handlers[event] ?? [];
 
     for (const handler of handlers) {
       // fire-and-forget
       Promise.resolve()
         .then(() => handler(payload))
         .catch((err) => {
-          console.error(`[EventBus] ${event} failed`, err);
+          console.error(`[EventBus] ${String(event)} failed`, err);
         });
     }
   }

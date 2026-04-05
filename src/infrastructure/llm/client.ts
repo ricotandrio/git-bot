@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { config } from '@/infrastructure/config';
+import { config } from '@/core/config';
 
 const genAI = new GoogleGenerativeAI(config.LLM.GEMINI_API_KEY);
 

@@ -1,6 +1,6 @@
 import type { Issue } from '@/domain/entities';
 import { octokit } from '../client';
-import { config } from '@/infrastructure/config';
+import { config } from '@/core/config';
 import { logger } from '@/lib';
 
 export class IssueService {

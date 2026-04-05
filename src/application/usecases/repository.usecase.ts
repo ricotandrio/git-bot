@@ -1,4 +1,4 @@
-import { DbGuildRepository } from "@/infrastructure/db";
+import { DbGuildRepository } from '@/integrations/db';
 
 // ADD REPOSITORY
 export type AddRepositoryResult =

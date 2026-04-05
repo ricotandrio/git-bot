@@ -1,4 +1,4 @@
-import { DbGuildRepository } from '@/infrastructure/db';
+import { DbGuildRepository } from '@/integrations/db';
 import { logger } from '@/lib';
 import { model } from '@/infrastructure/llm/client';
 import { SYSTEM_PROMPT } from '@/infrastructure/llm/prompt';

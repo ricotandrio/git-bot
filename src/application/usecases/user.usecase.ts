@@ -1,4 +1,4 @@
-import { DbUserMappingRepository } from "@/infrastructure/db";
+import { DbUserMappingRepository } from '@/integrations/db';
 
 // LINK GITHUB ACCOUNT
 export type LinkGithubAccountResult =

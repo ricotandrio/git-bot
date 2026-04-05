@@ -1,5 +1,5 @@
-import { config } from "@/infrastructure/config";
-import { initDb } from "@/infrastructure/db";
+import { config } from "@/core/config";
+import { initDb } from '@/integrations/db';
 
 import { startBot } from "@/interfaces/bot/client";
 

@@ -1,6 +1,6 @@
 import { Octokit } from '@octokit/rest';
 import { graphql } from '@octokit/graphql';
-import { config } from '@/infrastructure/config';
+import { config } from '@/core/config';
 
 // REST client — for issues, PRs, repos
 export const octokit = new Octokit({

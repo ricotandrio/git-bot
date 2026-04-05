@@ -3,8 +3,8 @@ import {
   SlashCommandBuilder,
   PermissionFlagsBits,
 } from 'discord.js';
-import { logger } from '@/lib';
-import { addRepositoryToDatabase } from '@/application/usecases/repository.usecase';
+import { logger } from '@/utils';
+import { addRepositoryToDatabase } from '@/core/orchestrations';
 
 export const data = new SlashCommandBuilder()
   .setName('add-repo')

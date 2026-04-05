@@ -1,5 +1,16 @@
 import Database from 'better-sqlite3';
-import { logger } from '@/lib/logger';
+import { logger } from '@/utils/logger';
+
+export type DbStatement = {
+  run: (...params: any[]) => unknown;
+  all: (...params: any[]) => unknown;
+  get: (...params: any[]) => unknown;
+};
+
+export type DbConnection = {
+  exec: (sql: string) => void;
+  prepare: (sql: string) => DbStatement;
+};
 
 export class DbClient {
   private db: Database.Database;
@@ -8,7 +19,7 @@ export class DbClient {
     this.db = new Database(dbPath);
   }
 
-  getDbClient(): Database.Database {
+  getDb(): DbConnection {
     return this.db;
   }
 

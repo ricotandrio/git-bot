@@ -1,5 +1,5 @@
 import { Guild, TextChannel } from 'discord.js';
-import { logger } from '@/lib/logger';
+import { logger } from '@/utils/logger';
 
 export async function handleGuildCreate(guild: Guild): Promise<void> {
   try {

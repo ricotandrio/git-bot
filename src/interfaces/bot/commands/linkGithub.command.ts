@@ -2,8 +2,8 @@ import {
   ChatInputCommandInteraction,
   SlashCommandBuilder,
 } from 'discord.js';
-import { logger } from '@/lib';
-import { linkGithubAccount } from '@/application/usecases/user.usecase';
+import { logger } from '@/utils';
+import { linkGithubAccount } from '@/core/orchestrations';
 
 export const data = new SlashCommandBuilder()
   .setName('link-github')

@@ -1,4 +1,4 @@
-import { config } from "@/core/config";
+import { config } from "@/config";
 import { startServer } from "@/interfaces/api/client";
 
 async function main() {

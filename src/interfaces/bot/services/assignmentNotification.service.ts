@@ -1,5 +1,5 @@
 import { Client } from 'discord.js';
-import { logger } from '@/lib';
+import { logger } from '@/utils';
 
 type NotifyAssignmentParams = {
   client: Client;

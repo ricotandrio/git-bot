@@ -1,8 +1,13 @@
 import { Message } from 'discord.js';
-import { logger } from '@/lib';
-import { listRepositoriesFromDatabase, removeRepositoryFromDatabase } from '@/application/usecases/repository.usecase';
-import { assignIssue, createIssue } from '@/application/usecases/issue.usecase';
-import { generateLLMResponse, ParsedCommand } from '@/application/usecases/llm.usecase';
+import { logger } from '@/utils';
+import {
+  assignIssue,
+  createIssue,
+  generateLLMResponse,
+  listRepositoriesFromDatabase,
+  removeRepositoryFromDatabase,
+  type ParsedCommand,
+} from '@/core/orchestrations';
 import { notifyIssueAssignment } from '@/interfaces/bot/services/assignmentNotification.service';
 import { getStandupChannelId } from '@/interfaces/bot/runtimeConfig';
 

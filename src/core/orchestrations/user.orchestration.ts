@@ -1,10 +1,19 @@
-import { DbUserMappingRepository } from '@/integrations/db';
+import { dbIntegration } from '@/integrations/db';
+import {
+  deleteUserMapping,
+  getUserMapping,
+  setUserMapping,
+} from '@/integrations/db/userMappings';
 
-// LINK GITHUB ACCOUNT
 export type LinkGithubAccountResult =
   | { success: true; githubUsername: string }
   | { success: false; reason: 'ALREADY_LINKED'; existingUsername: string }
   | { success: false; reason: 'INVALID_USERNAME' }
+  | { success: false; reason: 'PERSISTENCE_ERROR' };
+
+export type UnlinkGithubAccountResult =
+  | { success: true }
+  | { success: false; reason: 'NOT_LINKED' }
   | { success: false; reason: 'PERSISTENCE_ERROR' };
 
 export function linkGithubAccount(
@@ -12,13 +21,14 @@ export function linkGithubAccount(
   githubUsername: string,
 ): LinkGithubAccountResult {
   const trimmed = githubUsername.trim();
+  const db = dbIntegration.getClient().getDb();
 
-  const existing = DbUserMappingRepository.getGithubUsername(discordUserId);
+  const existing = getUserMapping(db, { discordId: discordUserId });
   if (existing) {
     return {
       success: false,
       reason: 'ALREADY_LINKED',
-      existingUsername: existing,
+      existingUsername: existing.github_username,
     };
   }
 
@@ -34,7 +44,7 @@ export function linkGithubAccount(
   }
 
   try {
-    DbUserMappingRepository.add(discordUserId, trimmed);
+    setUserMapping(db, { discordId: discordUserId, githubUsername: trimmed });
 
     return {
       success: true,
@@ -48,16 +58,12 @@ export function linkGithubAccount(
   }
 }
 
-// UNLINK GITHUB ACCOUNT
-export type UnlinkGithubAccountResult =
-  | { success: true }
-  | { success: false; reason: 'NOT_LINKED' }
-  | { success: false; reason: 'PERSISTENCE_ERROR' };
-
 export function unlinkGithubAccount(
   discordUserId: string,
 ): UnlinkGithubAccountResult {
-  const existing = DbUserMappingRepository.getGithubUsername(discordUserId);
+  const db = dbIntegration.getClient().getDb();
+  const existing = getUserMapping(db, { discordId: discordUserId });
+
   if (!existing) {
     return {
       success: false,
@@ -66,7 +72,7 @@ export function unlinkGithubAccount(
   }
 
   try {
-    DbUserMappingRepository.remove(discordUserId);
+    deleteUserMapping(db, { discordId: discordUserId });
 
     return {
       success: true,

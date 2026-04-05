@@ -3,9 +3,8 @@ import {
   ChatInputCommandInteraction,
   SlashCommandBuilder,
 } from 'discord.js';
-import { logger } from '@/lib/logger';
-import { createIssue } from '@/application/usecases/issue.usecase';
-import { listRepositoriesFromDatabase } from '@/application/usecases/repository.usecase';
+import { logger } from '@/utils/logger';
+import { createIssue, listRepositoriesFromDatabase } from '@/core/orchestrations';
 
 export const data = new SlashCommandBuilder()
   .setName('create-issue')

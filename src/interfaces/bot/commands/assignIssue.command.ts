@@ -3,9 +3,8 @@ import {
   SlashCommandBuilder,
   AutocompleteInteraction,
 } from 'discord.js';
-import { logger } from '@/lib';
-import { assignIssue } from '@/application/usecases/issue.usecase';
-import { listRepositoriesFromDatabase } from '@/application/usecases/repository.usecase';
+import { logger } from '@/utils';
+import { assignIssue, listRepositoriesFromDatabase } from '@/core/orchestrations';
 import { notifyIssueAssignment } from '@/interfaces/bot/services/assignmentNotification.service';
 import { getStandupChannelId } from '@/interfaces/bot/runtimeConfig';
 

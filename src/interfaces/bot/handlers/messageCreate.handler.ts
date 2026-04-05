@@ -1,6 +1,6 @@
 // src/bot/handlers/messageCreate.ts
 import { Message } from 'discord.js';
-import { logger } from '@/lib';
+import { logger } from '@/utils';
 import { handleLLMCommand } from './llmCommand.handler';
 
 export async function handleMessageCreate(message: Message): Promise<void> {

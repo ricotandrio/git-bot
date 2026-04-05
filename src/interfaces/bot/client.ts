@@ -1,8 +1,9 @@
 import { Client, GatewayIntentBits, REST, Routes } from 'discord.js';
+import { dbIntegration } from '@/integrations/db';
 import { commands } from '@/interfaces/bot/commands';
 import { registerHandlers } from '@/interfaces/bot/handlers';
 import { setBotRuntimeConfig } from '@/interfaces/bot/runtimeConfig';
-import { logger } from '@/lib';
+import { logger } from '@/utils';
 
 
 export async function deployBot(
@@ -54,6 +55,8 @@ export async function startBot(
   });
 
   const rest = new REST().setToken(BOT_TOKEN);
+
+  await dbIntegration.connect({ dbPath: './data/gitbot.db' });
 
   setBotRuntimeConfig({
     standupChannelId: STANDUP_CHANNEL_ID,

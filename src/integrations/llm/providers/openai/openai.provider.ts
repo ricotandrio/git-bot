@@ -1,6 +1,7 @@
 import OpenAI from "openai";
+import { LLMProvider } from "../llm.provider";
 
-export class OpenAIProvider {
+export class OpenAIProvider implements LLMProvider {
   private client: OpenAI;
   private model: string;
 

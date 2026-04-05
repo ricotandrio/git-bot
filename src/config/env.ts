@@ -21,6 +21,7 @@ export const config = {
     REPO: requireEnv('GITHUB_REPO'),
   },
   LLM: {
-    GEMINI_API_KEY: requireEnv('GEMINI_API_KEY'),
+    API_KEY: requireEnv('GEMINI_API_KEY'),
+    PROVIDER_NAME: (process.env.LLM_PROVIDER_NAME as "openai" | "gemini") || "gemini",
   },
 };

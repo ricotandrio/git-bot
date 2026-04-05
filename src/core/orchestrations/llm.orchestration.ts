@@ -1,7 +1,8 @@
-import { DbGuildRepository } from '@/integrations/db';
-import { logger } from '@/lib';
-import { model } from '@/infrastructure/llm/client';
-import { SYSTEM_PROMPT } from '@/infrastructure/llm/prompt';
+import { config } from '@/config';
+import { logger } from '@/utils';
+import { dbIntegration } from '@/integrations/db';
+import { getGuildRepositories } from '@/integrations/db/guildRepositories';
+import { llmIntegration } from '@/integrations/llm';
 
 export type ParsedCommand = {
   command: string;
@@ -20,22 +21,20 @@ export async function generateLLMResponse(
   content: string,
   guildId: string,
 ): Promise<ParsedCommand | null> {
-  const repos = DbGuildRepository.getAll(guildId);
+  const db = dbIntegration.getClient().getDb();
+  const repos = getGuildRepositories(db, { guildId });
 
   try {
     const prompt =
-      `${SYSTEM_PROMPT}\n\n` +
       `Available repos: ${repos.join(', ')}\n` +
       `User message: ${content}`;
 
     logger.info(prompt);
 
-    const result = await model.generateContent(prompt);
-    const raw = result.response.text().trim();
+    const raw = await llmIntegration.execute('git_bot', prompt) as string;
 
     logger.info({ raw }, 'Gemini raw response');
 
-    // strip markdown backticks if Gemini adds them anyway
     const cleanRaw = raw.replace(/```json|```/g, '').trim();
 
     return parseCommand(cleanRaw);

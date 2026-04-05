@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
-import { logger } from '@/lib';
-import { unlinkGithubAccount } from '@/application/usecases/user.usecase';
+import { logger } from '@/utils';
+import { unlinkGithubAccount } from '@/core/orchestrations';
 
 export const data = new SlashCommandBuilder()
   .setName('unlink-github')
@@ -36,6 +36,6 @@ export async function execute(
   }
 
   await interaction.editReply(
-    `✅ Your GitHub account **${result}** has been unlinked.`,
+    `✅ Your GitHub account has been unlinked.`,
   );
 }

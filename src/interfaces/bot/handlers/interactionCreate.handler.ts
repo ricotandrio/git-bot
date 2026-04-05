@@ -1,6 +1,6 @@
 import { Interaction } from 'discord.js';
 import { commands } from '@/interfaces/bot/commands';
-import { logger } from '@/lib';
+import { logger } from '@/utils';
 
 export async function handleInteraction(interaction: Interaction) {
   // Autocomplete

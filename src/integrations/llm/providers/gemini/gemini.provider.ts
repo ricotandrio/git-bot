@@ -1,12 +1,17 @@
 import { GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
+import { LLMProvider } from "../llm.provider";
 
-export class GeminiProvider {
+export class GeminiProvider implements LLMProvider {
   private client: GoogleGenerativeAI;
   private model: GenerativeModel;
 
   constructor(apiKey: string, model: string = "gemini-2.5-flash") {
     this.client = new GoogleGenerativeAI(apiKey);
     this.model = this.client.getGenerativeModel({ model });
+  }
+
+  getClient() {
+    return this.client;
   }
 
   async generate(instruction: string, prompt: string): Promise<string> {

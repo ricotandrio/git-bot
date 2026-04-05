@@ -4,6 +4,10 @@ GitBot is a Discord bot that integrates GitHub repository management directly in
 
 GitBot solves this by allowing anyone to create a structured GitHub issue directly from Discord with a simple command.
 
+## Prerequisites
+
+- Node 20+
+
 ## Usage
 
 GitBot supports both natural language interaction and structured slash commands.

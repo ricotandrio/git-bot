@@ -1,0 +1,145 @@
+import { getAppContext } from '@/app/context';
+import { getGuildRepositories } from '@/integrations/db/guild-repositories';
+import { getUserMapping } from '@/integrations/db/user-mappings';
+
+export type Issue = {
+  number: number;
+  title: string;
+  body?: string | null;
+  htmlUrl: string;
+  assignees: string[];
+};
+
+export type CreateIssueResult =
+  | { success: true; issueUrl: string }
+  | { success: false; reason: 'REPO_NOT_CONFIGURED' }
+  | { success: false; reason: 'EXTERNAL_ERROR' };
+
+export type AssignIssueResult =
+  | { success: true }
+  | { success: false; reason: 'USER_NOT_LINKED' }
+  | { success: false; reason: 'REPO_NOT_CONFIGURED' }
+  | { success: false; reason: 'EXTERNAL_ERROR' };
+
+export type GetIssuesResult =
+  | { success: true; issues: Issue[] }
+  | { success: false; reason: 'REPO_NOT_CONFIGURED' }
+  | { success: false; reason: 'EXTERNAL_ERROR' };
+
+export async function createIssue(
+  guildId: string,
+  repoName: string,
+  title: string,
+  description: string,
+  label: string,
+): Promise<CreateIssueResult> {
+  const appContext = getAppContext();
+  const db = appContext.db.getClient().getDb();
+  const repos = getGuildRepositories(db, { guildId });
+
+  if (!repos.includes(repoName)) {
+    return { success: false, reason: 'REPO_NOT_CONFIGURED' };
+  }
+
+  try {
+    const issue = (await appContext.github.execute('create_issue', {
+      owner: appContext.config.GITHUB.OWNER,
+      repo: repoName,
+      title: `[GITBOT] ${title}`,
+      body: description,
+      label,
+    })) as { html_url: string; number: number };
+
+    appContext.eventBus.emit('issue.created', {
+      guildId,
+      repoName,
+      issueNumber: issue.number,
+    });
+
+    return {
+      success: true,
+      issueUrl: issue.html_url,
+    };
+  } catch {
+    appContext.eventBus.emit('issue.creation_failed', {
+      guildId,
+      repoName,
+    });
+
+    return { success: false, reason: 'EXTERNAL_ERROR' };
+  }
+}
+
+export async function assignIssue(
+  guildId: string,
+  discordUserId: string,
+  repoName: string,
+  issueNumber: number,
+): Promise<AssignIssueResult> {
+  const appContext = getAppContext();
+  const db = appContext.db.getClient().getDb();
+  const githubUsername = getUserMapping(db, { discordId: discordUserId });
+
+  if (!githubUsername) {
+    return { success: false, reason: 'USER_NOT_LINKED' };
+  }
+
+  const repos = getGuildRepositories(db, { guildId });
+
+  if (!repos.includes(repoName)) {
+    return { success: false, reason: 'REPO_NOT_CONFIGURED' };
+  }
+
+  try {
+    await appContext.github.execute('assign_issue', {
+      owner: appContext.config.GITHUB.OWNER,
+      repo: repoName,
+      issue_number: issueNumber,
+      assignees: [githubUsername.github_username],
+    });
+
+    return { success: true };
+  } catch {
+    return { success: false, reason: 'EXTERNAL_ERROR' };
+  }
+}
+
+export async function getIssues(
+  guildId: string,
+  repoName: string,
+): Promise<GetIssuesResult> {
+  const appContext = getAppContext();
+  const db = appContext.db.getClient().getDb();
+  const repos = getGuildRepositories(db, { guildId });
+
+  if (!repos.includes(repoName)) {
+    return { success: false, reason: 'REPO_NOT_CONFIGURED' };
+  }
+
+  try {
+    const issues = (await appContext.github.execute('get_issues', {
+      owner: appContext.config.GITHUB.OWNER,
+      repo: repoName,
+      state: 'open',
+    })) as Array<{
+      number: number;
+      title: string;
+      body?: string | null;
+      htmlUrl: string;
+      assignees?: string[];
+    }>;
+
+    return {
+      success: true,
+      issues: issues.map((issue) => ({
+        number: issue.number,
+        title: issue.title,
+        body: issue.body ?? null,
+        htmlUrl: issue.htmlUrl,
+        assignees: issue.assignees ?? [],
+      })),
+    };
+  } catch {
+    return { success: false, reason: 'EXTERNAL_ERROR' };
+  }
+}

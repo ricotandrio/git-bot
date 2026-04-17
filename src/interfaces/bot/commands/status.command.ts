@@ -1,8 +1,10 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
-import { logger } from '@/lib';
-import { listRepositoriesFromDatabase } from '@/application/usecases/repository.usecase';
-import { getIssues } from '@/application/usecases/issue.usecase';
-import { Issue } from '@/domain/entities';
+import { logger } from '@/utils';
+import {
+  getIssues,
+  listRepositoriesFromDatabase,
+  type Issue,
+} from '@/core/orchestrations';
 
 export const data = new SlashCommandBuilder()
   .setName('status')
@@ -32,7 +34,6 @@ export async function execute(
   }
 
   const repositories = listRes.repositories;
-
 
   if (repositories.length === 0) {
     await interaction.reply({

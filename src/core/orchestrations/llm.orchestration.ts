@@ -1,8 +1,6 @@
-import { config } from '@/config';
+import { getAppContext } from '@/app/context';
 import { logger } from '@/utils';
-import { dbIntegration } from '@/integrations/db';
 import { getGuildRepositories } from '@/integrations/db/guild-repositories';
-import { llmIntegration } from '@/integrations/llm';
 
 export type ParsedCommand = {
   command: string;
@@ -21,7 +19,8 @@ export async function generateLLMResponse(
   content: string,
   guildId: string,
 ): Promise<ParsedCommand | null> {
-  const db = dbIntegration.getClient().getDb();
+  const appContext = getAppContext();
+  const db = appContext.db.getClient().getDb();
   const repos = getGuildRepositories(db, { guildId });
 
   try {
@@ -30,7 +29,7 @@ export async function generateLLMResponse(
 
     logger.info(prompt);
 
-    const raw = (await llmIntegration.execute('git_bot', prompt)) as string;
+    const raw = (await appContext.llm.execute('git_bot', prompt)) as string;
 
     logger.info({ raw }, 'Gemini raw response');
 

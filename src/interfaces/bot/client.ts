@@ -1,5 +1,5 @@
 import { Client, GatewayIntentBits, REST, Routes } from 'discord.js';
-import { dbIntegration } from '@/integrations/db';
+import type { AppContext } from '@/app/context';
 import { commands } from '@/interfaces/bot/commands';
 import { registerHandlers } from '@/interfaces/bot/handlers';
 import { setBotRuntimeConfig } from '@/interfaces/bot/runtime-config';
@@ -35,6 +35,7 @@ export async function deployBot(
 }
 
 export async function startBot(
+  appContext: AppContext,
   BOT_TOKEN: string,
   CLIENT_ID: string,
   GUILD_ID: string,
@@ -51,10 +52,8 @@ export async function startBot(
 
   const rest = new REST().setToken(BOT_TOKEN);
 
-  await dbIntegration.connect({ dbPath: './data/gitbot.db' });
-
   setBotRuntimeConfig({
-    standupChannelId: STANDUP_CHANNEL_ID,
+    standupChannelId: STANDUP_CHANNEL_ID ?? appContext.standupChannelId,
   });
 
   await deployBot(rest, CLIENT_ID, GUILD_ID);

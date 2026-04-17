@@ -1,4 +1,4 @@
-import { dbIntegration } from '@/integrations/db';
+import { getAppContext } from '@/app/context';
 import {
   deleteUserMapping,
   getUserMapping,
@@ -21,7 +21,7 @@ export function linkGithubAccount(
   githubUsername: string,
 ): LinkGithubAccountResult {
   const trimmed = githubUsername.trim();
-  const db = dbIntegration.getClient().getDb();
+  const db = getAppContext().db.getClient().getDb();
 
   const existing = getUserMapping(db, { discordId: discordUserId });
   if (existing) {
@@ -61,7 +61,7 @@ export function linkGithubAccount(
 export function unlinkGithubAccount(
   discordUserId: string,
 ): UnlinkGithubAccountResult {
-  const db = dbIntegration.getClient().getDb();
+  const db = getAppContext().db.getClient().getDb();
   const existing = getUserMapping(db, { discordId: discordUserId });
 
   if (!existing) {

@@ -49,5 +49,3 @@ export class DBIntegration implements Integration {
     }
   }
 }
-
-export const dbIntegration = new DBIntegration();

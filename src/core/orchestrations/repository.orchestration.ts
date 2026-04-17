@@ -1,4 +1,4 @@
-import { dbIntegration } from '@/integrations/db';
+import { getAppContext } from '@/app/context';
 import {
   addGuildRepository,
   getGuildRepositories,
@@ -30,7 +30,7 @@ export function addRepositoryToDatabase(
     return { success: false, reason: 'INVALID_FORMAT' };
   }
 
-  const db = dbIntegration.getClient().getDb();
+  const db = getAppContext().db.getClient().getDb();
   const existing = getGuildRepositories(db, { guildId });
 
   if (existing.includes(trimmed)) {
@@ -49,7 +49,7 @@ export function removeRepositoryFromDatabase(
   guildId: string,
   repoName: string,
 ): RemoveRepositoryResult {
-  const db = dbIntegration.getClient().getDb();
+  const db = getAppContext().db.getClient().getDb();
   const existing = getGuildRepositories(db, { guildId });
 
   if (!existing.includes(repoName)) {
@@ -68,7 +68,7 @@ export function listRepositoriesFromDatabase(
   guildId: string,
 ): ListRepositoriesResult {
   try {
-    const db = dbIntegration.getClient().getDb();
+    const db = getAppContext().db.getClient().getDb();
     const repositories = getGuildRepositories(db, { guildId });
     return { success: true, repositories };
   } catch {

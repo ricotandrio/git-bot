@@ -1,9 +1,6 @@
-import { config } from '@/config';
-import { dbIntegration } from '@/integrations/db';
+import { getAppContext } from '@/app/context';
 import { getGuildRepositories } from '@/integrations/db/guild-repositories';
 import { getUserMapping } from '@/integrations/db/user-mappings';
-import { githubIntegration } from '@/integrations/github';
-import { eventBus } from '../events';
 
 export type Issue = {
   number: number;
@@ -36,7 +33,8 @@ export async function createIssue(
   description: string,
   label: string,
 ): Promise<CreateIssueResult> {
-  const db = dbIntegration.getClient().getDb();
+  const appContext = getAppContext();
+  const db = appContext.db.getClient().getDb();
   const repos = getGuildRepositories(db, { guildId });
 
   if (!repos.includes(repoName)) {
@@ -44,15 +42,15 @@ export async function createIssue(
   }
 
   try {
-    const issue = (await githubIntegration.execute('create_issue', {
-      owner: config.GITHUB.OWNER,
+    const issue = (await appContext.github.execute('create_issue', {
+      owner: appContext.config.GITHUB.OWNER,
       repo: repoName,
       title: `[GITBOT] ${title}`,
       body: description,
       label,
     })) as { html_url: string; number: number };
 
-    eventBus.emit('issue.created', {
+    appContext.eventBus.emit('issue.created', {
       guildId,
       repoName,
       issueNumber: issue.number,
@@ -63,7 +61,7 @@ export async function createIssue(
       issueUrl: issue.html_url,
     };
   } catch {
-    eventBus.emit('issue.creation_failed', {
+    appContext.eventBus.emit('issue.creation_failed', {
       guildId,
       repoName,
     });
@@ -78,7 +76,8 @@ export async function assignIssue(
   repoName: string,
   issueNumber: number,
 ): Promise<AssignIssueResult> {
-  const db = dbIntegration.getClient().getDb();
+  const appContext = getAppContext();
+  const db = appContext.db.getClient().getDb();
   const githubUsername = getUserMapping(db, { discordId: discordUserId });
 
   if (!githubUsername) {
@@ -92,8 +91,8 @@ export async function assignIssue(
   }
 
   try {
-    await githubIntegration.execute('assign_issue', {
-      owner: config.GITHUB.OWNER,
+    await appContext.github.execute('assign_issue', {
+      owner: appContext.config.GITHUB.OWNER,
       repo: repoName,
       issue_number: issueNumber,
       assignees: [githubUsername.github_username],
@@ -109,7 +108,8 @@ export async function getIssues(
   guildId: string,
   repoName: string,
 ): Promise<GetIssuesResult> {
-  const db = dbIntegration.getClient().getDb();
+  const appContext = getAppContext();
+  const db = appContext.db.getClient().getDb();
   const repos = getGuildRepositories(db, { guildId });
 
   if (!repos.includes(repoName)) {
@@ -117,8 +117,8 @@ export async function getIssues(
   }
 
   try {
-    const issues = (await githubIntegration.execute('get_issues', {
-      owner: config.GITHUB.OWNER,
+    const issues = (await appContext.github.execute('get_issues', {
+      owner: appContext.config.GITHUB.OWNER,
       repo: repoName,
       state: 'open',
     })) as Array<{

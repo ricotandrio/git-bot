@@ -1,184 +1,110 @@
-# AGENT.md
+# AGENTS.md
 
 ## Purpose
 
-This file is the single source of truth for all AI agents working on this repository.
+This is the single instruction source for all AI agents in this repository.
 
-All models and providers must use this file as the primary instruction source instead of provider-specific prompt files.
+Use this file instead of provider-specific prompt files.
 
-If provider-specific files exist, they should only redirect to this file.
+If provider files exist (`CLAUDE.md`, `GEMINI.md`, `OPENAI.md`), they must only say:
 
----
+Refer to AGENTS.md
 
-## Scope
+## Project Context
 
-Use this document as the default policy for:
+Project: AI-driven Git bot with webhook automation and event-driven processing.
 
-- implementation tasks
-- bug fixes
-- reviews
-- refactors
-- tests
-- documentation updates
+Primary goals:
 
-Before making architectural changes, read the repository architecture documentation and align with existing system boundaries.
+- reliable event bus behavior
+- reliable webhook ingestion and outbound delivery
+- robust news scraping and summarization flow
+- safe autonomous behavior with clarification on ambiguity
 
-Do not introduce architecture conflicts unless explicitly requested.
+Canonical architecture doc:
 
----
+- `docs/ARCHITECTURE.md`
 
-## Core Agent Behavior
+Before architectural changes, read the architecture doc and keep boundaries intact unless explicitly asked to change them.
 
-### 0. Align with product and feature goals first
+## Core Rules
 
-Before proposing or implementing a solution:
+### 0) Start from product and feature goals
 
-- identify the product goal and feature goal
-- confirm success criteria for the requested change
-- ensure design and trade-offs support those goals
+Before proposing or coding:
 
-If goals are missing or unclear:
+- identify product goal and feature goal
+- confirm success criteria
+- confirm what must not change
 
-- stop
-- ask for clarification before implementation decisions
+If unclear, stop and ask.
 
-### 1. Do not guess
+### 1) Do not guess
 
-If requirements are unclear, missing, ambiguous, or risky:
+Do not invent assumptions for production behavior, schemas, contracts, payloads, external APIs, or deployment behavior.
 
-- stop
-- explain what is unclear
-- ask a direct follow-up question
+Low-risk implementation assumptions are allowed only when explicitly documented.
 
-Never invent assumptions for:
+### 2) Prefer correctness over speed
 
-- production behavior
-- database schema changes
-- event or message contracts
-- API payload structures
-- external API behavior
-- deployment behavior
-
-Reasonable implementation assumptions are allowed only when low-risk and clearly documented.
-
----
-
-### 2. Prefer correctness over speed
-
-Do not produce fast but unsafe changes.
-
-Prioritize:
+Priority order:
 
 1. correctness
 2. maintainability
 3. observability
 4. performance
-5. implementation speed
+5. speed
 
----
+### 3) Make minimal complete changes
 
-### 3. Make minimal but complete changes
-
-Avoid unrelated refactors.
-
-Do not rewrite working modules unless required.
-
-Prefer:
+Do:
 
 - focused fixes
 - explicit contracts
 - testable boundaries
-- incremental improvements
 
-Avoid:
+Do not:
 
 - broad rewrites
 - hidden side effects
-- unnecessary abstractions
+- unrelated refactors
 
----
+### 4) Explain non-trivial decisions
 
-### 4. Explain decisions
-
-When making non-trivial changes, include:
+Always state:
 
 - what changed
 - why it changed
 - risks
 - follow-up recommendations
 
-Do not silently introduce architectural decisions.
-
----
-
 ## Engineering Standards
 
 ### Code Quality
 
-Prefer:
-
 - explicit naming
 - deterministic behavior
-- small composable functions
+- small composable units
 - typed contracts
 - failure-safe operations
 
-Avoid:
-
-- hidden magic
-- implicit side effects
-- silent failures
-- swallowed exceptions
-- unclear retry behavior
-
----
+Avoid hidden magic, implicit side effects, silent failures, and swallowed exceptions.
 
 ### Logging
 
-All important flows must be observable.
-
-Include logs for:
-
-- key operation start/end
-- retries and backoff
-- external calls
-- validation failures
-- critical error paths
-
-Logs must be useful for production debugging.
-
----
+Log key starts/ends, retries, external calls, validation failures, and critical errors.
 
 ### Error Handling
 
-Never suppress errors silently.
-
-Use:
-
-- structured errors
-- actionable failure messages
-- explicit retry boundaries
-- explicit fallback behavior
-
----
+Use structured actionable errors, explicit retry boundaries, and explicit fallback behavior.
 
 ### Testing
 
-Prefer tests for:
+Cover core workflows, contracts, retries, failure paths, and edge cases.
 
-- core workflows
-- contract validation
-- retry behavior
-- failure paths
-- boundary and edge cases
+### Required Repository Scripts
 
-Do not rely only on happy path validation.
-
-### Repository Commands
-
-Keep repository maintenance commands defined and documented.
-
-Required scripts in package.json:
+`package.json` must keep:
 
 - `clean`
 - `clean:cache`
@@ -189,95 +115,59 @@ Required scripts in package.json:
 - `lint:fix`
 - `format:check`
 
-When changing these scripts, update README command examples in the same change.
+If these change, update command usage in `README.md` in the same change.
 
-Pre-commit checks must continue enforcing linting and formatting.
+Pre-commit must keep lint/format enforcement.
 
----
+## Execution Flow
 
-## Agent Execution Pattern
+Follow this order every time:
 
-When assigned a task:
+1. identify product and feature goals
+2. verify requirements and expected behavior
+3. read architecture/design docs
+4. inspect relevant code
+5. identify constraints and unknowns
+6. ask clarification if needed
+7. propose approach
+8. implement minimal complete solution
+9. validate edge and failure paths
+10. document outcomes
 
-### Step 0
+## Mandatory Completion Checklist
 
-Identify product and feature goals and use them to guide all decisions.
+Before marking done, all must be true:
 
-### Step 1
+- [ ] product goal identified
+- [ ] feature goal identified
+- [ ] success criteria confirmed
+- [ ] requirements verified
+- [ ] architecture docs reviewed
+- [ ] relevant code reviewed
+- [ ] constraints and risks listed
+- [ ] clarification asked when needed (or explicitly not needed)
+- [ ] minimal complete implementation delivered
+- [ ] failure paths and edge cases validated
+- [ ] lint/tests/validation run or explicitly justified if skipped
+- [ ] changes documented with risks and follow-ups
+- [ ] architecture and contracts preserved
 
-Read relevant code first.
+If any item is unchecked, task is not complete.
 
-### Step 2
-
-Read relevant architecture and design docs.
-
-### Step 3
-
-Identify constraints and unclear areas.
-
-### Step 4
-
-Ask clarification if needed.
-
-### Step 5
-
-Propose implementation approach.
-
-### Step 6
-
-Implement minimal complete solution.
-
-### Step 7
-
-Validate edge cases and failure paths.
-
-### Step 8
-
-Document what changed.
-
-Do not skip steps.
-
----
-
-## Provider Router Rule
-
-If another provider-specific instruction file exists, it should contain only:
-
-```md
-Refer to AGENT.md
-```
-
-AGENT.md must remain the canonical source.
-
-No duplicated instruction sources.
-
----
-
-## Forbidden Behavior
+## Forbidden
 
 Do not:
 
 - fabricate requirements
 - change architecture without checking docs
-- silently modify contracts
+- silently change contracts
 - bypass validation for speed
-- create fake mocks for production assumptions
+- create fake production assumptions
 - ignore known failure paths
 - suppress important failures
 
----
+## Default Mindset
 
-## Expected Default Mindset
+Think like a senior engineer, systems designer, and production reliability engineer.
 
-Think like:
-
-- a senior engineer
-- a systems designer
-- a production reliability engineer
-
-Not like:
-
-- a blind code generator
-- a blind autocomplete tool
-
-Build for production, not demo success.
+Build for production reliability, not demo success.

@@ -13,9 +13,14 @@
     "dev:bot": "dotenv -e .env -- tsx watch src/main.bot.ts",
     "dev:api": "dotenv -e .env -- tsx watch src/main.api.ts",
     "dev": "npm-run-all --parallel dev:bot dev:api",
+    "clean": "rimraf dist node_modules coverage .eslintcache .nyc_output",
+    "clean:cache": "rimraf node_modules/.cache .cache .tsbuildinfo",
     "test": "npm-run-all test:unit test:integration",
     "test:unit": "tsx --test tests/unit/**/*.test.ts",
     "test:integration": "tsx --test tests/integration/**/*.test.ts",
+    "lint": "eslint src tests --max-warnings=0",
+    "lint:fix": "eslint src tests --fix",
+    "format:check": "prettier --check .",
     "build": "tsc && tsc-alias",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
@@ -26,7 +31,17 @@
     "docker:down": "docker compose down",
     "docker:build": "docker build -f Dockerfile.api -t git-bot-api:latest . && docker build -f Dockerfile.bot -t git-bot-bot:latest .",
     "docker:run:bot": "docker run --env-file .env git-bot-bot:latest",
-    "docker:run:api": "docker run --env-file .env -p 3000:3000 git-bot-api:latest"
+    "docker:run:api": "docker run --env-file .env -p 3000:3000 git-bot-api:latest",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --max-warnings=0 --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
   },
   "license": "ISC",
   "type": "commonjs",
@@ -47,9 +62,16 @@
     "@types/express": "^5.0.6",
     "@types/node": "^25.3.0",
     "@types/pino": "^7.0.4",
+    "@typescript-eslint/eslint-plugin": "^8.59.0",
+    "@typescript-eslint/parser": "^8.59.0",
     "dotenv-cli": "^11.0.0",
+    "eslint": "^10.2.1",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.8.1",
+    "rimraf": "^6.1.3",
     "tsc-alias": "^1.8.10",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"

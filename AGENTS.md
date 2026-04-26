@@ -14,12 +14,12 @@ If provider-specific files exist, they should only redirect to this file.
 
 Use this document as the default policy for:
 
-* implementation tasks
-* bug fixes
-* reviews
-* refactors
-* tests
-* documentation updates
+- implementation tasks
+- bug fixes
+- reviews
+- refactors
+- tests
+- documentation updates
 
 Before making architectural changes, read the repository architecture documentation and align with existing system boundaries.
 
@@ -33,18 +33,18 @@ Do not introduce architecture conflicts unless explicitly requested.
 
 If requirements are unclear, missing, ambiguous, or risky:
 
-* stop
-* explain what is unclear
-* ask a direct follow-up question
+- stop
+- explain what is unclear
+- ask a direct follow-up question
 
 Never invent assumptions for:
 
-* production behavior
-* database schema changes
-* event or message contracts
-* API payload structures
-* external API behavior
-* deployment behavior
+- production behavior
+- database schema changes
+- event or message contracts
+- API payload structures
+- external API behavior
+- deployment behavior
 
 Reasonable implementation assumptions are allowed only when low-risk and clearly documented.
 
@@ -72,16 +72,16 @@ Do not rewrite working modules unless required.
 
 Prefer:
 
-* focused fixes
-* explicit contracts
-* testable boundaries
-* incremental improvements
+- focused fixes
+- explicit contracts
+- testable boundaries
+- incremental improvements
 
 Avoid:
 
-* broad rewrites
-* hidden side effects
-* unnecessary abstractions
+- broad rewrites
+- hidden side effects
+- unnecessary abstractions
 
 ---
 
@@ -89,10 +89,10 @@ Avoid:
 
 When making non-trivial changes, include:
 
-* what changed
-* why it changed
-* risks
-* follow-up recommendations
+- what changed
+- why it changed
+- risks
+- follow-up recommendations
 
 Do not silently introduce architectural decisions.
 
@@ -104,19 +104,19 @@ Do not silently introduce architectural decisions.
 
 Prefer:
 
-* explicit naming
-* deterministic behavior
-* small composable functions
-* typed contracts
-* failure-safe operations
+- explicit naming
+- deterministic behavior
+- small composable functions
+- typed contracts
+- failure-safe operations
 
 Avoid:
 
-* hidden magic
-* implicit side effects
-* silent failures
-* swallowed exceptions
-* unclear retry behavior
+- hidden magic
+- implicit side effects
+- silent failures
+- swallowed exceptions
+- unclear retry behavior
 
 ---
 
@@ -126,11 +126,11 @@ All important flows must be observable.
 
 Include logs for:
 
-* key operation start/end
-* retries and backoff
-* external calls
-* validation failures
-* critical error paths
+- key operation start/end
+- retries and backoff
+- external calls
+- validation failures
+- critical error paths
 
 Logs must be useful for production debugging.
 
@@ -142,10 +142,10 @@ Never suppress errors silently.
 
 Use:
 
-* structured errors
-* actionable failure messages
-* explicit retry boundaries
-* explicit fallback behavior
+- structured errors
+- actionable failure messages
+- explicit retry boundaries
+- explicit fallback behavior
 
 ---
 
@@ -153,13 +153,32 @@ Use:
 
 Prefer tests for:
 
-* core workflows
-* contract validation
-* retry behavior
-* failure paths
-* boundary and edge cases
+- core workflows
+- contract validation
+- retry behavior
+- failure paths
+- boundary and edge cases
 
 Do not rely only on happy path validation.
+
+### Repository Commands
+
+Keep repository maintenance commands defined and documented.
+
+Required scripts in package.json:
+
+- `clean`
+- `clean:cache`
+- `test`
+- `test:unit`
+- `test:integration`
+- `lint`
+- `lint:fix`
+- `format:check`
+
+When changing these scripts, update README command examples in the same change.
+
+Pre-commit checks must continue enforcing linting and formatting.
 
 ---
 
@@ -221,13 +240,13 @@ No duplicated instruction sources.
 
 Do not:
 
-* fabricate requirements
-* change architecture without checking docs
-* silently modify contracts
-* bypass validation for speed
-* create fake mocks for production assumptions
-* ignore known failure paths
-* suppress important failures
+- fabricate requirements
+- change architecture without checking docs
+- silently modify contracts
+- bypass validation for speed
+- create fake mocks for production assumptions
+- ignore known failure paths
+- suppress important failures
 
 ---
 
@@ -235,13 +254,13 @@ Do not:
 
 Think like:
 
-* a senior engineer
-* a systems designer
-* a production reliability engineer
+- a senior engineer
+- a systems designer
+- a production reliability engineer
 
 Not like:
 
-* a blind code generator
-* a blind autocomplete tool
+- a blind code generator
+- a blind autocomplete tool
 
 Build for production, not demo success.

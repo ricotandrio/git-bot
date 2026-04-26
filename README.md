@@ -28,6 +28,41 @@ Run integration tests only:
 npm run test:integration
 ```
 
+Clean build artifacts and common caches:
+
+```bash
+npm run clean
+```
+
+Clean cache directories only:
+
+```bash
+npm run clean:cache
+```
+
+## Linting and Formatting
+
+Run ESLint:
+
+```bash
+npm run lint
+```
+
+Run ESLint with auto-fix:
+
+```bash
+npm run lint:fix
+```
+
+Run Prettier check:
+
+```bash
+npm run format:check
+```
+
+Pre-commit enforcement is enabled with Husky + lint-staged.
+On every commit, staged files are checked by ESLint and formatted by Prettier.
+
 ## Usage
 
 GitBot supports both natural language interaction and structured slash commands.

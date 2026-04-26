@@ -29,6 +29,19 @@ Do not introduce architecture conflicts unless explicitly requested.
 
 ## Core Agent Behavior
 
+### 0. Align with product and feature goals first
+
+Before proposing or implementing a solution:
+
+- identify the product goal and feature goal
+- confirm success criteria for the requested change
+- ensure design and trade-offs support those goals
+
+If goals are missing or unclear:
+
+- stop
+- ask for clarification before implementation decisions
+
 ### 1. Do not guess
 
 If requirements are unclear, missing, ambiguous, or risky:
@@ -185,6 +198,10 @@ Pre-commit checks must continue enforcing linting and formatting.
 ## Agent Execution Pattern
 
 When assigned a task:
+
+### Step 0
+
+Identify product and feature goals and use them to guide all decisions.
 
 ### Step 1
 

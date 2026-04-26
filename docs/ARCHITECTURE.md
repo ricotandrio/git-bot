@@ -105,10 +105,10 @@ Current event map is intentionally small and can be expanded in `events.type.ts`
 
 1. `main.api.ts` loads config and starts Express.
 2. API exposes:
-	- `GET /`
-	- `GET /health`
-	- `POST /webhooks/github`
-	- `POST /api/webhooks/github`
+   - `GET /`
+   - `GET /health`
+   - `POST /webhooks/github`
+   - `POST /api/webhooks/github`
 3. Webhook payload metadata is logged and acknowledged.
 
 ## Persistence Model

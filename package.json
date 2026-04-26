@@ -20,10 +20,10 @@
     "test:integration": "tsx --test tests/integration/*.test.ts",
     "lint": "eslint src tests --max-warnings=0",
     "lint:fix": "eslint src tests --fix",
-    "format:check": "prettier --check .",
+    "prettier:check": "prettier --check .",
     "build": "tsc && tsc-alias",
     "typecheck": "tsc --noEmit",
-    "format": "prettier --write .",
+    "prettier": "prettier --write .",
     "start:bot": "dotenv -e .env -- node dist/main.bot.js",
     "start:api": "dotenv -e .env -- node dist/main.api.js",
     "start": "npm-run-all --parallel start:bot start:api",
@@ -36,11 +36,11 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "eslint --max-warnings=0 --fix",
-      "prettier --write"
+      "eslint --max-warnings=0",
+      "prettier --check"
     ],
     "*.{json,md,yml,yaml}": [
-      "prettier --write"
+      "prettier --check"
     ]
   },
   "license": "ISC",

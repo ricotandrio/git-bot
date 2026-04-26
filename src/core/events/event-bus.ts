@@ -1,6 +1,8 @@
 type Handler<T> = (payload: T) => void | Promise<void>;
 
-export class EventBus<Events extends Record<string, unknown> = Record<string, unknown>> {
+export class EventBus<
+  Events extends Record<string, unknown> = Record<string, unknown>,
+> {
   private handlers: { [K in keyof Events]?: Handler<Events[K]>[] } = {};
 
   on<K extends keyof Events>(event: K, handler: Handler<Events[K]>) {

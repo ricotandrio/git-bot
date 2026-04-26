@@ -1,6 +1,9 @@
 import { config as globalConfig } from '@/config';
 import { EventBus } from '@/core/events';
-import { AnalyticsService, registerAnalyticsConsumer } from '@/integrations/analytics';
+import {
+  AnalyticsService,
+  registerAnalyticsConsumer,
+} from '@/integrations/analytics';
 import { ConsoleProvider } from '@/integrations/analytics/providers';
 import { DBIntegration } from '@/integrations/db';
 import { GithubIntegration } from '@/integrations/github';

@@ -153,7 +153,7 @@ curl http://localhost:3000/health
 Expected response:
 
 ```json
-{"status":"ok"}
+{ "status": "ok" }
 ```
 
 ## 9) Discord Command Deployment

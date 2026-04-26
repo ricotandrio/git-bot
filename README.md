@@ -57,7 +57,7 @@ npm run lint:fix
 Run Prettier check:
 
 ```bash
-npm run format:check
+npm run prettier:check
 ```
 
 Pre-commit enforcement is enabled with Husky + lint-staged.
